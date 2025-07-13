@@ -1,0 +1,37 @@
+<section class="login-panel">
+  <h2 *ngIf="isLogin; else regTitle">Iniciar sesión</h2>
+  <ng-template #regTitle><h2>Crear cuenta</h2></ng-template>
+
+  <p class="registro-link">
+    <a href="#" (click)="toggleMode(); $event.preventDefault()">
+      {{ isLogin ? '¿Eres nuevo? Regístrate' : '¿Ya tienes cuenta? Inicia sesión' }}
+    </a>
+  </p>
+
+  <form (ngSubmit)="submit()">
+    <label>Email</label>
+    <input
+      type="email"
+      name="email"
+      [(ngModel)]="email"
+      placeholder="ejemplo@gmail.com"
+      required />
+
+    <label>Contraseña</label>
+    <input
+      type="password"
+      name="password"
+      [(ngModel)]="password"
+      placeholder="••••••••"
+      required />
+
+    <button type="submit" class="btn-ingresar">
+      {{ isLogin ? 'Iniciar sesión' : 'Registrarme' }}
+    </button>
+  </form>
+
+  <p *ngIf="errorMsg() as err" class="error-msg">{{ err }}</p>
+</section>
+
+
+

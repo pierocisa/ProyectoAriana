@@ -1,0 +1,55 @@
+<section class="carrito-grid">
+  <div class="carrito-lista">
+    <h2>🛍️ Carrito de Compras</h2>
+
+    <div *ngIf="carrito.length === 0" class="carrito-vacio">
+      <p>No hay productos en el carrito.</p>
+    </div>
+
+    <ul *ngIf="carrito.length > 0">
+      <li *ngFor="let item of carrito; index as i">
+        <img [src]="item.imagen" [alt]="item.nombre" />
+        <div class="info">
+          <h4>{{ item.nombre }}</h4>
+          <p>Categoría: {{ item.categoria }}</p>
+          <p>Cantidad: {{ item.cantidad }}</p>
+          <p>Precio: {{ item.precio | currency:'PEN':'symbol' }}</p>
+          <button (click)="eliminar(i)">🗑 Eliminar</button>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <div *ngIf="carrito.length > 0" class="carrito-resumen compacto">
+    <h3 class="resumen-titulo">Resumen</h3>
+
+    <div class="resumen-scroll">
+      <div class="resumen-linea">
+        <span>Productos</span>
+        <span>{{ carrito.length }}</span>
+      </div>
+
+      <div class="resumen-linea">
+        <span>Ítems</span>
+        <span>{{ obtenerCantidadTotal() }}</span>
+      </div>
+
+      <div class="resumen-linea total">
+        <strong>Total</strong>
+        <strong>{{ total | currency:'PEN':'symbol' }}</strong>
+      </div>
+    </div>
+
+    <div class="resumen-acciones">
+      <button class="finalizar-btn" (click)="finalizarCompra()">Continuar compra</button>
+
+
+      <button class="boton-vaciar" (click)="vaciar()">Vaciar</button>
+    </div>
+  </div>
+</section>
+
+
+
+
+

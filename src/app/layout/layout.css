@@ -1,0 +1,269 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: rgb(253, 192, 197);
+}
+
+/* Header */
+.encabezado-elevado {
+  background-color: #264c3e;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+  position: sticky;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+  animation: slideDownFade 0.6s ease forwards;
+}
+
+@keyframes slideDownFade {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Usamos Grid para balancear tres zonas */
+.nav-contenedor {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  padding: 16px 28px;
+  column-gap: 20px;
+}
+
+/* Logo y subtítulo */
+.logo {
+  font-size: 22px;
+  font-weight: 600;
+  color: #ffe8e4;
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  letter-spacing: 1px;
+  justify-self: start;
+}
+
+.subtitulo {
+  font-family: 'Playfair Display', serif;
+  font-size: 15px;
+  color: #ffe8e4;
+  margin-top: 4px;
+}
+
+/* Menú centrado */
+.menu-navegacion {
+  list-style: none;
+  display: flex;
+  gap: 30px;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  align-items: center;
+  justify-self: center;
+}
+
+.menu-navegacion li a {
+  color: white;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 500;
+  transition: border-bottom 0.3s ease;
+  border-bottom: 2px solid transparent;
+  font-family: 'Poppins', sans-serif;
+}
+
+.menu-navegacion li a:hover {
+  border-bottom: 2px solid #f26c6c;
+}
+
+/* Íconos alineados */
+.acciones {
+  display: flex;
+  gap: 14px;
+  font-size: 22px;
+  color: #ffe8e4;
+  cursor: pointer;
+  justify-self: end;
+}
+
+/* Menú hamburguesa móvil */
+#menu-toggle {
+  display: none;
+}
+
+.menu-icon {
+  display: none;
+  color: #fff;
+  font-size: 28px;
+  cursor: pointer;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+  .nav-contenedor {
+    grid-template-columns: auto auto;
+    grid-template-areas:
+      "logo toggle"
+      "menu menu"
+      "acciones acciones";
+    row-gap: 10px;
+  }
+
+  .logo {
+    grid-area: logo;
+  }
+
+  .menu-icon {
+    display: block;
+    grid-area: toggle;
+  }
+
+  .menu-navegacion {
+    width: 100%;
+    display: none;
+    flex-direction: column;
+    background-color: #2f5d4a;
+    margin-top: 10px;
+    padding: 14px 0;
+    border-radius: 0 0 12px 12px;
+    text-align: center;
+  }
+
+  #menu-toggle:checked + .menu-icon + .menu-navegacion {
+    display: flex;
+  }
+
+  .acciones {
+    grid-area: acciones;
+    justify-content: center;
+    margin-top: 12px;
+    font-size: 20px;
+  }
+}
+
+
+/* Botón animado */
+.boton-comprar {
+  background: linear-gradient(135deg, #0b7a3a, #eceae7);
+  color: white;
+  padding: 14px 32px;
+  font-size: 20px;
+  font-weight: bold;
+  border: none;
+  border-radius: 40px;
+  cursor: pointer;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+  font-family: 'Melondy', sans-serif;
+  margin-top: 20px;
+  animation: pulse 2s infinite ease-in-out;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+.boton-comprar:hover {
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+}
+
+/* Footer Boutique */
+footer.footer-boutique {
+  background: linear-gradient(to top, #d2dfd2, #f6f8f6);
+  border-top: 1px solid #d9e5dd;
+  padding: 2rem 1.5rem 1rem;
+  color: #2e4a42;
+  font-family: 'Inter', sans-serif;
+  margin-top: auto;
+}
+
+.footer-contenido {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 2rem;
+  max-width: 1100px;
+  margin: auto;
+}
+
+.footer-logo h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem;
+  margin: 0;
+  color: #2f5e47;
+}
+
+.footer-logo p {
+  margin-top: 0.3rem;
+  font-size: 0.95rem;
+  color: #5a746b;
+}
+
+.footer-logo .redes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 0.8rem;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.footer-logo .redes a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.footer-logo .redes img {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  object-fit: cover;
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.footer-logo .redes a:hover img {
+  transform: scale(1.1);
+  filter: brightness(1.1);
+}
+
+.footer-enlaces,
+.footer-contacto {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.footer-enlaces a,
+.footer-contacto a {
+  text-decoration: none;
+  color: #2e4a42;
+  font-size: 0.95rem;
+  transition: color 0.2s ease;
+}
+
+.footer-enlaces a:hover,
+.footer-contacto a:hover {
+  color: #4d775f;
+}
+
+.footer-credito {
+  text-align: center;
+  margin-top: 1.5rem;
+  font-size: 0.85rem;
+  color: #78948c;
+}
+
+
+
+
+
+
+
+

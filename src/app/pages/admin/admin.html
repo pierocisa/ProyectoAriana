@@ -1,0 +1,16 @@
+<section class="admin-panel">
+  <aside class="sidebar">
+    <h2>AdminPanel 🌿</h2>
+    <nav>
+      <a routerLink="productos" routerLinkActive="active">Productos</a>
+      <a routerLink="categorias" routerLinkActive="active">Categorías</a>
+      <a routerLink="usuarios" routerLinkActive="active">Usuarios</a>
+      <a routerLink="pedidos" routerLinkActive="active">Pedidos</a>
+      <a routerLink="promociones" routerLinkActive="active">Promociones</a>
+    </nav>
+  </aside>
+
+  <main class="contenido-admin">
+    <router-outlet></router-outlet> <!-- 👈 CRUCIAL -->
+  </main>
+</section>

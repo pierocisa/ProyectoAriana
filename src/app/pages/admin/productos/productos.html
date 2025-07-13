@@ -1,0 +1,78 @@
+<section class="productos-panel">
+  <h2>🛒 Gestión de Productos</h2>
+
+  <div class="acciones-productos">
+    <button (click)="abrirModal()" class="btn-crear">➕ Nuevo Producto</button>
+  </div>
+
+  <div *ngIf="cargando">
+    <p>⏳ Cargando productos...</p>
+  </div>
+
+  <div *ngIf="!cargando && productos.length === 0">
+    <p>📭 No hay productos registrados aún.</p>
+  </div>
+
+  <table *ngIf="!cargando && productos.length > 0" class="tabla-productos">
+    <thead>
+      <tr>
+        <th>Categoría</th>
+        <th>Nombre</th>
+        <th>Descripción</th>
+        <th>Precio</th>
+        <th>Imagen</th>
+        <th>Estado</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let prod of productos">
+        <td>{{ prod.categoria }}</td>
+        <td>{{ prod.nombre }}</td>
+        <td>{{ prod.descripcion }}</td>
+        <td>S/. {{ prod.precio }}</td>
+        <td><img [src]="prod.imagen" alt="Imagen" width="60" /></td>
+        <td>{{ prod.estado === 'activo' ? '✅ Activo' : '🚫 Inactivo' }}</td>
+        <td>
+          <button (click)="abrirModal(prod)">✏️ Editar</button>
+          <button *ngIf="prod.estado === 'activo'" (click)="inhabilitar(prod)">🚫</button>
+          <button *ngIf="prod.estado === 'inactivo'" (click)="activar(prod)">✅</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- Modal para agregar o editar producto -->
+<div class="modal-bg" *ngIf="modalActivo">
+  <div class="modal">
+    <h3>{{ editandoId ? '✏️ Editar Producto' : '➕ Nuevo Producto' }}</h3>
+
+    <label for="categoria">Categoría:</label>
+    <select id="categoria" [(ngModel)]="nuevoProducto.categoria">
+      <option disabled value="">Seleccione una categoría</option>
+      <option *ngFor="let cat of categoriasDisponibles" [value]="cat">{{ cat }}</option>
+    </select>
+
+    <label for="nombre">Nombre:</label>
+    <input id="nombre" type="text" [(ngModel)]="nuevoProducto.nombre" />
+
+    <label for="descripcion">Descripción:</label>
+    <textarea id="descripcion" [(ngModel)]="nuevoProducto.descripcion"></textarea>
+
+    <label for="precio">Precio:</label>
+    <input id="precio" type="number" [(ngModel)]="nuevoProducto.precio" />
+
+    <label for="imagen">Imagen:</label>
+    <input type="file" accept="image/*" (change)="cargarImagen($event)" />
+
+    <div *ngIf="nuevoProducto.imagen" class="imagen-preview">
+      <img [src]="nuevoProducto.imagen" alt="Vista previa" />
+    </div>
+
+    <div class="acciones-modal">
+      <button (click)="guardarProducto()">💾 Guardar</button>
+      <button (click)="cerrarModal()">❌ Cancelar</button>
+    </div>
+  </div>
+</div>

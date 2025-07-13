@@ -1,0 +1,45 @@
+<section class="plantas-modernas">
+  <h2>Catálogo de Plantas</h2>
+
+  <div class="plantas-grid">
+    <div class="tarjeta-planta" *ngFor="let planta of productos">
+      <img
+        [src]="planta.imagen"
+        [alt]="planta.nombre"
+        (click)="verImagen(planta)"
+      />
+
+      <div class="contenido">
+        <h3>{{ planta.nombre }}</h3>
+        <p>{{ planta.descripcion }}</p>
+        <span class="precio">
+          {{ planta.precio | currency:'PEN':'symbol':'1.2-2' }}
+        </span>
+
+        <div class="contador">
+          <button (click)="restarCantidad(planta)" class="control-cantidad">−</button>
+          <span class="valor-cantidad">{{ planta.cantidad || 1 }}</span>
+          <button (click)="sumarCantidad(planta)" class="control-cantidad">+</button>
+        </div>
+
+        <button class="boton" (click)="anadirAlCarrito(planta)">Añadir al carrito</button>
+        <div *ngIf="planta.agregado" class="msg-exito">✅ Añadido</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de imagen ampliada -->
+<div class="modal-imagen" *ngIf="imagenGrande">
+  <div class="fondo-modal" (click)="cerrarImagen()"></div>
+  <button class="cerrar-modal" (click)="cerrarImagen()">✕</button>
+  <img [src]="imagenGrande" alt="Vista ampliada" />
+</div>
+
+</section>
+
+
+
+
+
+
+

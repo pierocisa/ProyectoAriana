@@ -1,0 +1,56 @@
+<section class="categorias-panel">
+  <h2>🏷️ Gestión de Categorías</h2>
+
+  <div class="acciones-categorias">
+    <input type="text" placeholder="🔍 Buscar categoría..." class="campo-busqueda" />
+    <button class="btn-crear" (click)="abrirModal()">➕ Crear Categoría</button>
+  </div>
+
+  <table class="tabla-categorias">
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Imagen</th>
+        <th>Estado</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let cat of categorias; let i = index">
+        <td>{{ cat.nombre }}</td>
+        <td>
+          <img [src]="cat.imagen" alt="Imagen categoría" width="60" />
+        </td>
+        <td>{{ cat.estado === 'activa' ? '✅ Activa' : '🚫 Inactiva' }}</td>
+        <td>
+          <button class="btn-editar" (click)="abrirModal(i)">✏️</button>
+          <button *ngIf="cat.estado === 'activa'" class="btn-inhabilitar" (click)="inhabilitar(i)">🚫</button>
+          <button *ngIf="cat.estado === 'inactiva'" class="btn-activar" (click)="activar(i)">✅</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<div class="modal-bg" *ngIf="modalActivo">
+  <div class="modal">
+    <h3>{{ editandoId  !== null ? '✏️ Editar Categoría' : '➕ Nueva Categoría' }}</h3>
+
+    <label>Nombre:</label>
+    <input type="text" [(ngModel)]="nuevaCategoria.nombre" placeholder="Ej. Macetas" />
+
+    <label>Imagen:</label>
+    <input type="file" accept="image/*" (change)="cargarImagen($event)" />
+
+    <div *ngIf="nuevaCategoria.imagen" class="imagen-preview">
+      <img [src]="nuevaCategoria.imagen" alt="Vista previa" width="100" />
+    </div>
+
+    <div class="acciones-modal">
+      <button class="btn-guardar" (click)="guardarCategoria()">💾 Guardar</button>
+      <button class="btn-cancelar" (click)="cerrarModal()">❌ Cancelar</button>
+    </div>
+  </div>
+</div>
+
+

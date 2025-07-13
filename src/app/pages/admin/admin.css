@@ -1,0 +1,53 @@
+/* Layout general */
+.admin-layout {
+  display: flex;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+/* Menú lateral oscuro */
+.admin-sidebar {
+  width: 240px;
+  background-color: #212429; /* fondo plomo oscuro */
+  color: white;
+  padding: 20px;
+}
+
+.admin-sidebar .logo {
+  font-size: 1.5rem;
+  margin-bottom: 30px;
+  color: #fff;
+}
+
+.menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.menu li {
+  margin-bottom: 15px;
+}
+
+.menu li a {
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  display: block;
+  padding: 8px 0;
+  transition: color 0.3s ease;
+}
+
+.menu li a:hover {
+  color: #9ca3af;
+}
+
+/* Contenido gris claro */
+.admin-content {
+  flex: 1;
+  background-color: #eeeeee; /* fondo gris claro */
+  padding: 40px;
+}
+
+

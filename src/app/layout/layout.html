@@ -1,0 +1,72 @@
+<header class="encabezado-elevado">
+  <nav class="nav-contenedor">
+    <h1 class="logo">Ariana Carrasco Shop</h1>
+
+    <!-- Menú hamburguesa móvil -->
+    <input type="checkbox" id="menu-toggle">
+    <label for="menu-toggle" class="menu-icon">
+      <span class="material-symbols-outlined">menu</span>
+    </label>
+    
+    <ul class="menu-navegacion">
+      <li><a routerLink="/">Inicio</a></li>
+      <li><a routerLink="/historia">Nuestra historia</a></li>
+      <li><a routerLink="/contacto">Contacto</a></li>
+    </ul>
+
+    <div class="acciones">
+      <span class="material-symbols-outlined" (click)="irAlLogin()">account_circle</span>
+      <span class="material-symbols-outlined" (click)="irAlCarrito()">shopping_cart</span>
+    </div>
+  </nav>
+</header>
+
+
+
+<router-outlet></router-outlet>
+
+<footer class="footer-boutique">
+  <div class="footer-contenido">
+    <div class="footer-logo">
+      <h3>ARIANA</h3>
+      <p>Cultiva con estilo. Conecta con lo natural.</p>
+
+      <div class="redes">
+        <a href="https://www.instagram.com/arianacarrascolopez/" target="_blank" aria-label="Instagram">
+          <img src="/instagram_4494488.png" alt="Instagram" />
+        </a>
+        <a href="https://www.facebook.com/arisuculent" target="_blank" aria-label="Facebook">
+          <img src="/facebook_4494475.png" alt="Facebook" />
+        </a>
+        <a href="https://wa.me/51974064801" target="_blank" aria-label="WhatsApp">
+          <img src="/whatsapp_4494494.png" alt="WhatsApp" />
+        </a>
+        <a href="https://www.tiktok.com/@arianacarrascolopez" target="_blank" aria-label="TikTok">
+          <img src="/tictok.png" alt="TikTok" />
+        </a>
+      </div>
+    </div>
+
+    <div class="footer-enlaces">
+      <a href="/plantas">Plantas</a>
+      <a href="/macetas">Macetas</a>
+      <a href="/cuidado">Cuidado</a>
+      <a href="/sustractos">Sustratos</a>
+    </div>
+
+    <div class="footer-contacto">
+      <p>📧 arianacarrasco&commat;gmail.com</p>
+      
+    </div>
+  </div>
+
+  <div class="footer-credito">
+    © {{ anoActual || 2024 }}  Todos los derechos reservados.
+  </div>
+</footer>
+
+
+
+
+
+
