@@ -1,1 +1,59 @@
-<p>usuarios works!</p>
+<section class="usuarios-panel">
+  <h2>👥 Gestión de Usuarios</h2>
+
+  <input
+    type="text"
+    placeholder="🔍 Buscar usuarios por email..."
+    [(ngModel)]="filtroEmail"
+    class="input-busqueda"
+  />
+
+  <table class="tabla-usuarios">
+    <thead>
+      <tr>
+        <th>Email</th>
+        <th>Rol</th>
+        <th>Estado</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of usuariosFiltrados">
+        <td>{{ user.email }}</td>
+        <td>{{ user.role | uppercase }}</td>
+        <td>
+          <span
+            [class.activo]="user.estado === 'activo'"
+            [class.inactivo]="user.estado === 'inactivo'"
+          >
+            ● {{ user.estado === 'activo' ? 'Activo' : 'Inactivo' }}
+          </span>
+        </td>
+        <td>
+          <button
+            *ngIf="user.estado === 'inactivo'"
+            (click)="habilitarUsuario(user)"
+            class="btn-habilitar"
+          >
+            ✅ Habilitar
+          </button>
+          <button
+            *ngIf="user.estado === 'activo'"
+            (click)="deshabilitarUsuario(user)"
+            class="btn-deshabilitar"
+          >
+            🚫 Deshabilitar
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div *ngIf="!cargando && usuariosFiltrados.length === 0" class="mensaje-vacio">
+    📭 No hay usuarios registrados.
+  </div>
+
+  <div *ngIf="cargando" class="spinner">
+    ⏳ Cargando usuarios...
+  </div>
+</section>

@@ -1,1 +1,76 @@
-<p>ofertas works!</p>
+<section class="ofertas-panel">
+  <h2>🎁 Gestión de Promociones</h2>
+
+  <div class="acciones-ofertas">
+    <button (click)="abrirModal()" class="btn-crear">➕ Nueva Promoción</button>
+  </div>
+
+  <!-- Loader -->
+  <div *ngIf="cargando" class="loader">
+    ⏳ Cargando promociones...
+  </div>
+
+  <!-- Sin promociones -->
+  <div *ngIf="!cargando && promociones.length === 0" class="sin-datos">
+    📭 No hay promociones registradas aún.
+  </div>
+
+  <!-- Tabla de promociones -->
+  <table *ngIf="!cargando && promociones.length > 0" class="tabla-ofertas">
+    <thead>
+      <tr>
+        <th>Título</th>
+        <th>Descripción</th>
+        <th>Descuento</th>
+        <th>Imagen</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let promo of promociones">
+        <td>{{ promo.titulo }}</td>
+        <td>{{ promo.descripcion }}</td>
+        <td><strong>{{ promo.descuento }}%</strong></td>
+        <td>
+          <img *ngIf="promo.imagen; else sinImagen" [src]="promo.imagen" alt="Imagen Promo" />
+          <ng-template #sinImagen>
+            <span class="texto-sin-imagen">Sin imagen</span>
+          </ng-template>
+        </td>
+        <td class="acciones">
+          <button class="btn-detalles" (click)="abrirModal(promo)">✏️ Editar</button>
+
+        <button class="btn-eliminar" (click)="eliminarPromocion(promo)">🗑️ Eliminar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Modal -->
+  <div class="modal-bg" *ngIf="modalActivo">
+    <div class="modal">
+      <h3>{{ editandoId ? '✏️ Editar Promoción' : '🎁 Nueva Promoción' }}</h3>
+
+      <label for="titulo">🎯 Título:</label>
+      <input id="titulo" type="text" [(ngModel)]="nuevaPromocion.titulo" />
+
+      <label for="descripcion">📝 Descripción:</label>
+      <textarea id="descripcion" [(ngModel)]="nuevaPromocion.descripcion"></textarea>
+
+      <label for="descuento">💸 Descuento (%):</label>
+      <input id="descuento" type="number" [(ngModel)]="nuevaPromocion.descuento" min="0" max="100" />
+
+      <label for="imagen">🖼️ Imagen:</label>
+      <input type="file" accept="image/*" (change)="cargarImagen($event)" />
+
+      <div *ngIf="nuevaPromocion.imagen" class="imagen-preview">
+        <img [src]="nuevaPromocion.imagen" alt="Vista previa" />
+      </div>
+
+      <div class="acciones-modal">
+        <button class="btn-guardar" (click)="guardarPromocion()">💾 Guardar</button>
+        <button class="btn-cancelar" (click)="cerrarModal()">❌ Cancelar</button>
+      </div>
+    </div>
+  </div>
+</section>

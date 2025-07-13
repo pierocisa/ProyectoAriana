@@ -1,28 +1,34 @@
 <div class="pagina-principal contenedor-promociones">
   <h1>🎁 Promociones por Categoría</h1>
 
-  <section *ngFor="let seccion of promociones">
+  <!-- ⏳ Loader mientras se cargan las promociones -->
+  <div *ngIf="cargando" class="loader">
+    <p>Cargando promociones...</p>
+  </div>
+
+  <!-- ✅ Promociones agrupadas por categoría -->
+  <section *ngFor="let seccion of promociones" class="seccion-categoria">
     <h2 class="titulo-categoria">🌿 {{ seccion.categoria }}</h2>
 
     <div class="grid-productos">
       <div class="producto" *ngFor="let producto of seccion.productos">
-        <img [src]="producto.imagen" [alt]="producto.nombre" />
-        <h3>{{ producto.nombre }}</h3>
-        <p class="descripcion">{{ producto.descripcion }}</p>
+        <img [src]="producto.imagen" [alt]="producto.nombre" class="producto-img" />
 
-        <p class="precio">
-          <span class="tachado">S/ {{ producto.precioAnterior }}</span>
-          <span class="ahora">S/ {{ producto.precio }}</span>
+        <h3 class="producto-nombre">{{ producto.nombre }}</h3>
+        <p class="producto-descripcion">{{ producto.descripcion }}</p>
+
+        <p class="producto-precio">
+          <span class="precio-anterior">S/ {{ producto.precioAnterior }}</span>
+          <span class="precio-actual">S/ {{ producto.precio }}</span>
         </p>
 
-        <button (click)="anadirProducto(producto)">🛒 Añadir al carrito</button>
+        <button class="btn-anadir" (click)="anadirProducto(producto)">🛒 Añadir al carrito</button>
       </div>
     </div>
   </section>
 
+  <!-- ✅ Toast de éxito -->
   <div *ngIf="mensajeExito" class="toast-exito">
     ✅ Producto añadido con éxito
   </div>
 </div>
-
-

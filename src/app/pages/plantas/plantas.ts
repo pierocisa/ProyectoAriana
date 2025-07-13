@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { CartService } from '../../services/cart';
+import { ProductoService } from '../../services/producto.service';
 
 @Component({
   standalone: true,
@@ -10,55 +11,50 @@ import { CartService } from '../../services/cart';
   templateUrl: './plantas.html',
   styleUrls: ['./plantas.css']
 })
-export class PlantasComponent {
+export class PlantasComponent implements OnInit {
   imagenGrande: string | null = null;
+  productos: any[] = [];
+  cargando: boolean = true;
 
-  productos = [
-    {
-      nombre: 'ORQUÍDEA',
-      descripcion: 'Planta de origen tropical ideal para interiores, sus flores simétricas y duraderas pueden florecer varias veces al año con los cuidados adecuados.',
-      precio: 50.0,
-      imagen: '/IMG_2449.jpeg',
-      cantidad: 1,
-      agregado: false
-    },
-    {
-      nombre: 'MONSTERA',
-      descripcion: 'Planta de hojas grandes y aspecto exótico, perfecta para ambientes interiores luminosos.',
-      precio: 45.0,
-      imagen: '/monstera.jpg',
-      cantidad: 1,
-      agregado: false
-    },
-    {
-      nombre: 'CACTUS DECORATIVO',
-      descripcion: 'Requiere muy poca agua y luz indirecta. Ideal para espacios modernos y minimalistas.',
-      precio: 25.0,
-      imagen: '/cactus.jpg',
-      cantidad: 1,
-      agregado: false
-    }
-  ];
+  constructor(
+    private cartService: CartService,
+    private productoService: ProductoService,
+    private router: Router
+  ) {}
 
-  constructor(private cartService: CartService, private router: Router) {}
+  ngOnInit() {
+    this.productoService.obtenerProductos().subscribe({
+      next: (data: any[]) => {
+        // Solo mostrar productos activos y de categoría "Plantas"
+        this.productos = data.filter(
+          prod => prod.estado === 'activo' && prod.categoria === 'Plantas'
+        );
+        this.cargando = false;
+      },
+      error: err => {
+        console.error('❌ Error al cargar productos:', err);
+        this.cargando = false;
+      }
+    });
+  }
 
   sumarCantidad(planta: any) {
-    planta.cantidad++;
+    planta.cantidad = (planta.cantidad || 1) + 1;
   }
 
   restarCantidad(planta: any) {
-    if (planta.cantidad > 1) {
+    if ((planta.cantidad || 1) > 1) {
       planta.cantidad--;
     }
   }
 
   anadirAlCarrito(planta: any) {
-    this.cartService.agregar(planta, 'Plantas', planta.cantidad);
+    this.cartService.agregar(planta, 'Plantas', planta.cantidad || 1);
     planta.agregado = true;
 
     setTimeout(() => {
       planta.agregado = false;
-    }, 2000);
+    }, 1500);
   }
 
   verImagen(planta: any) {
@@ -69,9 +65,3 @@ export class PlantasComponent {
     this.imagenGrande = null;
   }
 }
-
-
-
-
-
-

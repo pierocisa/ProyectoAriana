@@ -1,0 +1,36 @@
+<section class="sustratos-modernos">
+  <h2>🌱 Catálogo de Sustratos</h2>
+
+  <div *ngIf="productos.length === 0" class="sin-productos">
+    <p>📭 No hay sustratos disponibles en esta categoría.</p>
+  </div>
+
+  <div class="sustratos-grid" *ngIf="productos.length > 0">
+    <div class="tarjeta-sustrato" *ngFor="let item of productos">
+      <img [src]="item.imagen" [alt]="item.nombre" (click)="verImagen(item)" />
+      <div class="contenido">
+        <h3>{{ item.nombre }}</h3>
+        <p>{{ item.descripcion }}</p>
+        <span class="precio">
+          {{ item.precio | currency: 'PEN':'symbol':'1.2-2' }}
+        </span>
+
+        <div class="contador">
+          <button (click)="restarCantidad(item)">−</button>
+          <span>{{ item.cantidad }}</span>
+          <button (click)="sumarCantidad(item)">+</button>
+        </div>
+
+        <button (click)="anadirAlCarrito(item)">🛒 Añadir al carrito</button>
+        <div *ngIf="item.agregado" class="mensaje-exito">✅ Añadido</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div *ngIf="imagenGrande" class="modal-imagen">
+    <div class="fondo-modal" (click)="cerrarImagen()"></div>
+    <button class="cerrar-modal" (click)="cerrarImagen()">✕</button>
+    <img [src]="imagenGrande" alt="Vista ampliada" />
+  </div>
+</section>

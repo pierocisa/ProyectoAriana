@@ -1,38 +1,50 @@
-<section class="plantas-modernas">
-  <h2>Catálogo de Macetas</h2>
+<section class="macetas-modernas">
+  <h2 class="titulo-seccion">🪴 Catálogo de Macetas</h2>
 
-  <div class="plantas-grid">
-    <div class="tarjeta-planta" *ngFor="let producto of productos">
-      <img
-        [src]="producto.imagen"
-        [alt]="producto.nombre"
-        (click)="verImagen(producto)"
-      />
+  <div *ngIf="cargando" class="cargando">
+    ⏳ Cargando macetas...
+  </div>
+
+  <div *ngIf="!cargando && productos.length === 0" class="sin-productos">
+    📭 No hay macetas disponibles en esta categoría.
+  </div>
+
+  <div class="plantas-grid" *ngIf="!cargando && productos.length > 0">
+    <div class="tarjeta-planta" *ngFor="let maceta of productos">
+      <div class="imagen-contenedor">
+        <img
+          [src]="maceta.imagen"
+          [alt]="maceta.nombre"
+          (click)="verImagen(maceta)"
+        />
+      </div>
 
       <div class="contenido">
-        <h3>{{ producto.nombre }}</h3>
-        <p>{{ producto.descripcion }}</p>
+        <h3>{{ maceta.nombre }}</h3>
+        <p class="descripcion">{{ maceta.descripcion }}</p>
         <span class="precio">
-          {{ producto.precio | currency:'PEN':'symbol':'1.2-2' }}
+          {{ maceta.precio | currency:'PEN':'symbol':'1.2-2' }}
         </span>
 
         <div class="contador">
-          <button (click)="restarCantidad(producto)" class="control-cantidad">−</button>
-          <span class="valor-cantidad">{{ producto.cantidad || 1 }}</span>
-          <button (click)="sumarCantidad(producto)" class="control-cantidad">+</button>
+          <button (click)="restarCantidad(maceta)" class="control-cantidad">−</button>
+          <span class="valor-cantidad">{{ maceta.cantidad || 1 }}</span>
+          <button (click)="sumarCantidad(maceta)" class="control-cantidad">+</button>
         </div>
 
-        <button class="boton" (click)="anadirAlCarrito(producto)">Añadir al carrito</button>
-        <div *ngIf="producto.agregado" class="msg-exito">✅ Añadido</div>
+        <button class="boton" (click)="anadirAlCarrito(maceta)">
+          🛒 {{ maceta.agregado ? 'Añadido ✅' : 'Añadir al carrito' }}
+        </button>
       </div>
     </div>
   </div>
 
-  <!-- Modal de imagen ampliada -->
+  <!-- Modal -->
   <div class="modal-imagen" *ngIf="imagenGrande">
     <div class="fondo-modal" (click)="cerrarImagen()"></div>
-    <button class="cerrar-modal" (click)="cerrarImagen()">✕</button>
-    <img [src]="imagenGrande" alt="Vista ampliada" />
+    <div class="contenedor-modal">
+      <button class="cerrar-modal" (click)="cerrarImagen()">✕</button>
+      <img [src]="imagenGrande" alt="Vista ampliada" />
+    </div>
   </div>
 </section>
-

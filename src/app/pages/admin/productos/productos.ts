@@ -15,15 +15,18 @@ export class ProductosComponent implements OnInit {
   editandoId: string | null = null;
 
   categoriasDisponibles: string[] = [
-    'Plantas',
-    'Macetas',
-    'Sustratos',
-    'Líneas de cuidado',
-    'Paquetes'
+    'plantas',
+    'macetas',
+    'sustratos',
+    'cuidados', // ✅ sin tildes y minúsculas
+    'paquetes'
   ];
 
+  categoriasSeleccionadas: string[] = []; // ✅ Lista de categorías activas
+
   nuevoProducto = this.obtenerProductoVacio();
-  productos: any[] = [];
+  productos: any[] = [];          // Todos los productos
+  productosFiltrados: any[] = []; // Solo los que coinciden con filtros
   cargando = false;
 
   private productoService = inject(ProductoService);
@@ -36,16 +39,39 @@ export class ProductosComponent implements OnInit {
     this.cargando = true;
     this.productoService.obtenerProductos().subscribe({
       next: (data: any[]) => {
-        console.log('📦 Productos obtenidos:', data);
         this.productos = data;
+        this.filtrarProductos(); // Aplica filtros al cargar
         this.cargando = false;
       },
       error: (err: any) => {
         console.error('❌ Error al obtener productos:', err);
-        alert('⚠️ No se pudieron cargar los productos. Verifica las reglas de Firestore.');
+        alert('⚠️ No se pudieron cargar los productos. Verifica Firestore.');
         this.cargando = false;
       }
     });
+  }
+
+  // ✅ Filtra productos según categorías seleccionadas
+  filtrarProductos() {
+    if (this.categoriasSeleccionadas.length === 0) {
+      // Si no hay filtros, muestra todos
+      this.productosFiltrados = this.productos;
+    } else {
+      this.productosFiltrados = this.productos.filter((p) =>
+        this.categoriasSeleccionadas.includes(this.normalizarTexto(p.categoria))
+      );
+    }
+  }
+
+  // ✅ Detecta cambios en el checklist
+  toggleCategoria(categoria: string) {
+    const index = this.categoriasSeleccionadas.indexOf(categoria);
+    if (index === -1) {
+      this.categoriasSeleccionadas.push(categoria);
+    } else {
+      this.categoriasSeleccionadas.splice(index, 1);
+    }
+    this.filtrarProductos();
   }
 
   abrirModal(producto?: any) {
@@ -66,29 +92,31 @@ export class ProductosComponent implements OnInit {
   }
 
   async guardarProducto() {
+    this.nuevoProducto.categoria = this.normalizarTexto(this.nuevoProducto.categoria);
+
     if (
       this.nuevoProducto.nombre.trim() &&
       this.nuevoProducto.imagen &&
-      this.nuevoProducto.categoria
+      this.nuevoProducto.categoria &&
+      this.nuevoProducto.precio >= 0 &&
+      this.nuevoProducto.stock >= 0
     ) {
       try {
         if (this.editandoId) {
           await this.productoService.actualizarProducto(this.editandoId, this.nuevoProducto);
-          console.log('✅ Producto actualizado');
           alert('✅ Producto actualizado correctamente.');
         } else {
           await this.productoService.agregarProducto(this.nuevoProducto);
-          console.log('✅ Producto agregado');
           alert('✅ Producto agregado correctamente.');
         }
         this.cerrarModal();
         this.cargarProductos();
       } catch (err) {
         console.error('❌ Error al guardar producto:', err);
-        alert('⚠️ Error al guardar el producto. Revisa la conexión a Firestore o las reglas.');
+        alert('⚠️ Error al guardar el producto.');
       }
     } else {
-      alert('⚠️ Completa todos los campos requeridos');
+      alert('⚠️ Completa todos los campos requeridos.');
     }
   }
 
@@ -105,19 +133,13 @@ export class ProductosComponent implements OnInit {
 
   inhabilitar(producto: any) {
     this.productoService.actualizarProducto(producto.id, { estado: 'inactivo' })
-      .then(() => {
-        console.log('🚫 Producto inhabilitado');
-        this.cargarProductos();
-      })
+      .then(() => this.cargarProductos())
       .catch(err => console.error('❌ Error al inhabilitar producto:', err));
   }
 
   activar(producto: any) {
     this.productoService.actualizarProducto(producto.id, { estado: 'activo' })
-      .then(() => {
-        console.log('✅ Producto activado');
-        this.cargarProductos();
-      })
+      .then(() => this.cargarProductos())
       .catch(err => console.error('❌ Error al activar producto:', err));
   }
 
@@ -131,8 +153,16 @@ export class ProductosComponent implements OnInit {
       descripcion: '',
       imagen: '',
       precio: 0,
+      stock: 0,
       categoria: '',
       estado: 'activo'
     };
+  }
+
+  private normalizarTexto(texto: string): string {
+    return texto
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, ''); // elimina tildes
   }
 }

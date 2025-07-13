@@ -1,0 +1,49 @@
+<section class="cuidados-modernos">
+  <h2 class="titulo-seccion">🧴 Catálogo de Cuidados</h2>
+
+  <div *ngIf="cargando" class="cargando">
+    ⏳ Cargando productos...
+  </div>
+
+  <div *ngIf="!cargando && productos.length === 0" class="sin-productos">
+    📭 No hay productos disponibles en esta categoría.
+  </div>
+
+  <div class="grid-productos" *ngIf="!cargando && productos.length > 0">
+    <div class="tarjeta-producto" *ngFor="let producto of productos">
+      <div class="imagen-contenedor">
+        <img
+          [src]="producto.imagen"
+          [alt]="producto.nombre"
+          (click)="verImagen(producto)"
+        />
+      </div>
+
+      <div class="contenido">
+        <h3>{{ producto.nombre }}</h3>
+        <p class="descripcion">{{ producto.descripcion }}</p>
+        <span class="precio">
+          {{ producto.precio | currency:'PEN':'symbol':'1.2-2' }}
+        </span>
+
+        <div class="contador">
+          <button (click)="restarCantidad(producto)" class="control-cantidad">−</button>
+          <span class="valor-cantidad">{{ producto.cantidad }}</span>
+          <button (click)="sumarCantidad(producto)" class="control-cantidad">+</button>
+        </div>
+
+        <button class="boton" (click)="anadirAlCarrito(producto)">
+          🛒 {{ producto.agregado ? 'Añadido ✅' : 'Añadir al carrito' }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-imagen" *ngIf="imagenGrande">
+    <div class="fondo-modal" (click)="cerrarImagen()"></div>
+    <div class="contenedor-modal">
+      <button class="cerrar-modal" (click)="cerrarImagen()">✕</button>
+      <img [src]="imagenGrande" alt="Vista ampliada" />
+    </div>
+  </div>
+</section>

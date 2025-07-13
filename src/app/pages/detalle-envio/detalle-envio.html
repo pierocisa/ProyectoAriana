@@ -1,95 +1,81 @@
 <section class="envio-con-resumen">
-  <!-- FORMULARIO DE ENVÍO -->
   <div class="columna-formulario">
     <h2>Detalles de Envío</h2>
-
-    <form (ngSubmit)="enviarFormulario()" #formEnvio="ngForm">
+    <form #f="ngForm" (ngSubmit)="enviarPedido(f)">
       <div class="form-campos">
-        <input type="text" name="nombre" required placeholder="Nombre *" ngModel />
-        <input type="text" name="apellido" required placeholder="Apellido *" ngModel />
-        <input type="text" name="dni" required placeholder="DNI *" ngModel />
-        <input type="tel" name="telefono" required placeholder="Teléfono *" ngModel />
+        <input  name="nombre"       ngModel required placeholder="Nombre *" />
+        <input  name="apellido"     ngModel required placeholder="Apellido *" />
+        <input  name="dni"          ngModel required placeholder="DNI *" />
+        <input  name="telefono"     ngModel required placeholder="Teléfono *" />
 
-        <select name="departamento" required ngModel>
+        <select name="departamento" ngModel required>
           <option value="">Departamento *</option>
-          <option>Apurímac</option>
-          <option>Cusco</option>
-          <option>Lima</option>
+          <option>Apurímac</option><option>Cusco</option><option>Lima</option>
         </select>
 
-        <select name="provincia" required ngModel>
+        <select name="provincia" ngModel required>
           <option value="">Provincia *</option>
-          <option>Abancay</option>
-          <option>Cusco</option>
+          <option>Abancay</option><option>Cusco</option>
         </select>
 
-        <select name="distrito" required ngModel>
+        <select name="distrito" ngModel required>
           <option value="">Distrito *</option>
-          <option>Tamburco</option>
-          <option>Wanchaq</option>
+          <option>Tamburco</option><option>Wanchaq</option>
         </select>
 
-        <input type="text" name="direccion" required placeholder="Dirección exacta *" ngModel />
-        <input type="text" name="ciudad" required placeholder="Ciudad *" ngModel />
-        <input type="text" name="codigoPostal" required placeholder="Código Postal *" ngModel />
+        <input name="direccion"    ngModel required placeholder="Dirección exacta *" />
+        <input name="ciudad"       ngModel required placeholder="Ciudad *" />
+        <input name="codigoPostal" ngModel required placeholder="Código Postal *" />
 
-        <select name="comprobante" required ngModel>
+        <select name="comprobante" ngModel required>
           <option value="">Comprobante *</option>
-          <option>Boleta</option>
-          <option>Factura</option>
+          <option>Boleta</option><option>Factura</option>
         </select>
 
         <label class="guardar-linea">
-          <input type="checkbox" name="guardar" ngModel />
+          <input name="guardar" type="checkbox" ngModel />
           Guardar esta dirección para futuras compras
         </label>
       </div>
 
-      <button type="submit" class="boton-continuar">➡ Continuar</button>
+      <button type="submit" class="boton-continuar" [disabled]="f.invalid">
+        ➡ Continuar
+      </button>
     </form>
   </div>
 
-  <!-- RESUMEN DE PEDIDO -->
   <aside class="resumen-pedido">
-    <h3>Resumen del pedido</h3>
+    <h3>Resumen del Pedido</h3>
 
-    <div *ngFor="let item of carrito; let i = index" class="producto-linea">
-  <div class="producto-info">
-    <img [src]="item.imagen" alt="Miniatura {{ item.nombre }}" class="miniatura" />
-    <div class="producto-texto">
-      <span class="producto-nombre">{{ item.nombre }}</span>
-      <span class="producto-cantidad">x{{ item.cantidad }}</span>
+    <div *ngFor="let item of carrito; index as i" class="producto-linea">
+      <div class="producto-info">
+        <img [src]="item.imagen" class="miniatura" alt="{{item.nombre}}" />
+        <div class="producto-texto">
+          <span>{{item.nombre}}</span>
+          <span>x{{item.cantidad}}</span>
+        </div>
+      </div>
+      <div class="producto-precio">
+        {{ (item.precio * item.cantidad) | currency:'PEN' }}
+        <button type="button" (click)="eliminarItem(i)" title="Eliminar">✕</button>
+      </div>
     </div>
-  </div>
-  <div class="producto-precio">
-    {{ item.precio * item.cantidad | currency:'PEN' }}
-    <button type="button" (click)="eliminarItem(i)" class="btn-eliminar" title="Eliminar">✕</button>
-  </div>
-</div>
-
 
     <div class="linea-separador"></div>
 
     <div class="resumen-totales">
       <div class="linea-total">
         <span>Subtotal</span>
-        <span>{{ subtotal | currency:'PEN' }}</span>
+        <span>{{subtotal | currency:'PEN'}}</span>
       </div>
       <div class="linea-total">
         <span>IGV (10%)</span>
-        <span>{{ igv | currency:'PEN' }}</span>
+        <span>{{igv | currency:'PEN'}}</span>
       </div>
       <div class="linea-total total-final">
         <strong>Total</strong>
-        <strong>{{ total | currency:'PEN' }}</strong>
+        <strong>{{total | currency:'PEN'}}</strong>
       </div>
     </div>
   </aside>
 </section>
-
-
-
-
-
-
-

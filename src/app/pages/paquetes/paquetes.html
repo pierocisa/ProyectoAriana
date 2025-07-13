@@ -1,0 +1,50 @@
+<section class="paquetes-modernos">
+  <h2 class="titulo-seccion">📦 Catálogo de Paquetes</h2>
+
+  <div *ngIf="cargando" class="cargando">
+    ⏳ Cargando paquetes...
+  </div>
+
+  <div *ngIf="!cargando && productos.length === 0" class="sin-productos">
+    📭 No hay paquetes disponibles en esta categoría.
+  </div>
+
+  <div class="plantas-grid" *ngIf="!cargando && productos.length > 0">
+    <div class="tarjeta-planta" *ngFor="let paquete of productos">
+      <div class="imagen-contenedor">
+        <img
+          [src]="paquete.imagen"
+          [alt]="paquete.nombre"
+          (click)="verImagen(paquete)"
+        />
+      </div>
+
+      <div class="contenido">
+        <h3>{{ paquete.nombre }}</h3>
+        <p class="descripcion">{{ paquete.descripcion }}</p>
+        <span class="precio">
+          {{ paquete.precio | currency:'PEN':'symbol':'1.2-2' }}
+        </span>
+
+        <div class="contador">
+          <button (click)="restarCantidad(paquete)" class="control-cantidad">−</button>
+          <span class="valor-cantidad">{{ paquete.cantidad || 1 }}</span>
+          <button (click)="sumarCantidad(paquete)" class="control-cantidad">+</button>
+        </div>
+
+        <button class="boton" (click)="anadirAlCarrito(paquete)">
+          🛒 {{ paquete.agregado ? 'Añadido ✅' : 'Añadir al carrito' }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal-imagen" *ngIf="imagenGrande">
+    <div class="fondo-modal" (click)="cerrarImagen()"></div>
+    <div class="contenedor-modal">
+      <button class="cerrar-modal" (click)="cerrarImagen()">✕</button>
+      <img [src]="imagenGrande" alt="Vista ampliada" />
+    </div>
+  </div>
+</section>

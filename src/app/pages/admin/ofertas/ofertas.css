@@ -1,0 +1,143 @@
+.ofertas-panel {
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.acciones-ofertas {
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.btn-crear {
+  background: #28a745;
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn-crear:hover {
+  background: #218838;
+}
+
+.loader, .sin-datos {
+  text-align: center;
+  color: #888;
+  font-size: 1rem;
+  margin-top: 1rem;
+}
+
+.tabla-ofertas {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tabla-ofertas th,
+.tabla-ofertas td {
+  border: 1px solid #ddd;
+  padding: 0.75rem;
+  text-align: center;
+}
+
+.tabla-ofertas th {
+  background: #f5f5f5;
+}
+
+.tabla-ofertas img {
+  width: 60px;
+  height: auto;
+  border-radius: 4px;
+}
+
+.texto-sin-imagen {
+  font-size: 0.9rem;
+  color: #999;
+}
+
+.acciones {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.btn-detalles {
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 0.4rem 0.8rem;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-detalles:hover {
+  background: #0056b3;
+}
+
+.btn-eliminar {
+  background: #dc3545;
+  color: white;
+  border: none;
+  padding: 0.4rem 0.8rem;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-eliminar:hover {
+  background: #c82333;
+}
+
+.modal-bg {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex; justify-content: center; align-items: center;
+}
+
+.modal {
+  background: white;
+  padding: 1rem;
+  border-radius: 8px;
+  width: 400px;
+}
+
+.imagen-preview img {
+  width: 100px;
+  height: auto;
+  margin-top: 0.5rem;
+}
+
+.acciones-modal {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.btn-guardar {
+  background: #28a745;
+  color: white;
+  padding: 0.4rem 0.8rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-guardar:hover {
+  background: #218838;
+}
+
+.btn-cancelar {
+  background: #6c757d;
+  color: white;
+  padding: 0.4rem 0.8rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-cancelar:hover {
+  background: #5a6268;
+}

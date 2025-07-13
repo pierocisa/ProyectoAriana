@@ -1,16 +1,18 @@
-<section class="admin-panel">
-  <aside class="sidebar">
-    <h2>AdminPanel 🌿</h2>
-    <nav>
-      <a routerLink="productos" routerLinkActive="active">Productos</a>
-      <a routerLink="categorias" routerLinkActive="active">Categorías</a>
-      <a routerLink="usuarios" routerLinkActive="active">Usuarios</a>
-      <a routerLink="pedidos" routerLinkActive="active">Pedidos</a>
-      <a routerLink="promociones" routerLinkActive="active">Promociones</a>
-    </nav>
+<section class="admin-layout">
+  <!-- Menú lateral -->
+  <aside class="admin-sidebar">
+    <div class="logo">🌿 AdminPanel</div>
+    <ul class="menu">
+      <li><a routerLink="productos" routerLinkActive="active">📦 Productos</a></li>
+      <li><a routerLink="categorias" routerLinkActive="active">🗂 Categorías</a></li>
+      <li><a routerLink="usuarios" routerLinkActive="active">👤 Usuarios</a></li>
+      <li><a routerLink="pedidos" routerLinkActive="active">🛒 Pedidos</a></li>
+      <li><a routerLink="ofertas" routerLinkActive="active">🎁 Promociones</a></li>
+    </ul>
   </aside>
 
-  <main class="contenido-admin">
-    <router-outlet></router-outlet> <!-- 👈 CRUCIAL -->
+  <!-- Contenido principal -->
+  <main class="admin-content">
+    <router-outlet></router-outlet>
   </main>
 </section>

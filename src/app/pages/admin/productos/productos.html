@@ -1,42 +1,69 @@
 <section class="productos-panel">
   <h2>🛒 Gestión de Productos</h2>
 
+  <!-- ✅ Filtros de categorías -->
+  <div class="filtros-categorias">
+    <span>📂 Filtrar por categoría:</span>
+    <label *ngFor="let cat of categoriasDisponibles" class="chip">
+      <input
+        type="checkbox"
+        [checked]="categoriasSeleccionadas.includes(cat)"
+        (change)="toggleCategoria(cat)"
+      />
+      {{ cat | titlecase }}
+    </label>
+  </div>
+
   <div class="acciones-productos">
     <button (click)="abrirModal()" class="btn-crear">➕ Nuevo Producto</button>
   </div>
 
-  <div *ngIf="cargando">
-    <p>⏳ Cargando productos...</p>
+  <div *ngIf="cargando" class="cargando">
+    ⏳ Cargando productos...
   </div>
 
-  <div *ngIf="!cargando && productos.length === 0">
-    <p>📭 No hay productos registrados aún.</p>
+  <div *ngIf="!cargando && productosFiltrados.length === 0" class="sin-productos">
+    📭 No hay productos registrados para esta categoría.
   </div>
 
-  <table *ngIf="!cargando && productos.length > 0" class="tabla-productos">
+  <table *ngIf="!cargando && productosFiltrados.length > 0" class="tabla-productos">
     <thead>
       <tr>
         <th>Categoría</th>
         <th>Nombre</th>
         <th>Descripción</th>
         <th>Precio</th>
+        <th>Stock</th>
         <th>Imagen</th>
         <th>Estado</th>
         <th>Acciones</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let prod of productos">
+      <tr *ngFor="let prod of productosFiltrados">
         <td>{{ prod.categoria }}</td>
         <td>{{ prod.nombre }}</td>
         <td>{{ prod.descripcion }}</td>
         <td>S/. {{ prod.precio }}</td>
-        <td><img [src]="prod.imagen" alt="Imagen" width="60" /></td>
+        <td>{{ prod.stock }}</td>
+        <td><img [src]="prod.imagen" alt="Imagen" class="miniatura" /></td>
         <td>{{ prod.estado === 'activo' ? '✅ Activo' : '🚫 Inactivo' }}</td>
         <td>
-          <button (click)="abrirModal(prod)">✏️ Editar</button>
-          <button *ngIf="prod.estado === 'activo'" (click)="inhabilitar(prod)">🚫</button>
-          <button *ngIf="prod.estado === 'inactivo'" (click)="activar(prod)">✅</button>
+          <button (click)="abrirModal(prod)" class="btn-editar">✏️</button>
+          <button
+            *ngIf="prod.estado === 'activo'"
+            (click)="inhabilitar(prod)"
+            class="btn-inactivar"
+          >
+            🚫
+          </button>
+          <button
+            *ngIf="prod.estado === 'inactivo'"
+            (click)="activar(prod)"
+            class="btn-activar"
+          >
+            ✅
+          </button>
         </td>
       </tr>
     </tbody>
@@ -63,6 +90,9 @@
     <label for="precio">Precio:</label>
     <input id="precio" type="number" [(ngModel)]="nuevoProducto.precio" />
 
+    <label for="stock">Stock:</label>
+    <input id="stock" type="number" [(ngModel)]="nuevoProducto.stock" min="0" />
+
     <label for="imagen">Imagen:</label>
     <input type="file" accept="image/*" (change)="cargarImagen($event)" />
 
@@ -71,8 +101,8 @@
     </div>
 
     <div class="acciones-modal">
-      <button (click)="guardarProducto()">💾 Guardar</button>
-      <button (click)="cerrarModal()">❌ Cancelar</button>
+      <button (click)="guardarProducto()" class="btn-guardar">💾 Guardar</button>
+      <button (click)="cerrarModal()" class="btn-cancelar">❌ Cancelar</button>
     </div>
   </div>
 </div>

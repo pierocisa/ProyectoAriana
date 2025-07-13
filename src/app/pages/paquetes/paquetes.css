@@ -1,0 +1,154 @@
+.paquetes-modernos {
+  padding: 2rem;
+  background-color: #f9f7f3;
+  min-height: 100vh;
+}
+
+.titulo-seccion {
+  text-align: center;
+  font-size: 2rem;
+  color: #d84315;
+  margin-bottom: 1.5rem;
+}
+
+.cargando {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #888;
+}
+
+.sin-productos {
+  text-align: center;
+  font-size: 1.1rem;
+  color: #888;
+}
+
+.plantas-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.tarjeta-planta {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease;
+  overflow: hidden;
+}
+
+.tarjeta-planta:hover {
+  transform: scale(1.03);
+}
+
+.imagen-contenedor img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  cursor: pointer;
+}
+
+.contenido {
+  padding: 1rem;
+  text-align: center;
+}
+
+.contenido h3 {
+  font-size: 1.3rem;
+  color: #bf360c;
+  margin: 0.5rem 0;
+}
+
+.contenido .descripcion {
+  font-size: 0.95rem;
+  color: #555;
+  margin-bottom: 0.8rem;
+}
+
+.precio {
+  display: block;
+  font-weight: bold;
+  color: #d84315;
+  margin-bottom: 1rem;
+}
+
+.contador {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 0.8rem;
+}
+
+.control-cantidad {
+  background: #ff7043;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  margin: 0 0.5rem;
+  transition: background 0.3s ease;
+}
+
+.control-cantidad:hover {
+  background: #f4511e;
+}
+
+.boton {
+  background: #d84315;
+  color: #fff;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.boton:hover {
+  background: #bf360c;
+}
+
+.msg-agregado {
+  margin-top: 0.6rem;
+  color: #d84315;
+  font-size: 0.9rem;
+}
+
+.modal-imagen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-imagen img {
+  max-width: 90%;
+  max-height: 90%;
+  border-radius: 8px;
+}
+
+.fondo-modal {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.cerrar-modal {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  background: #fff;
+  border: none;
+  font-size: 1.5rem;
+  border-radius: 50%;
+  cursor: pointer;
+}
