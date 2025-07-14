@@ -1,5 +1,5 @@
 <div class="admin-container">
-  <h2>Gestión de Pedidos</h2>
+  <h2>📦 Gestión de Pedidos</h2>
   <table class="admin-table">
     <thead>
       <tr>
@@ -11,20 +11,53 @@
         <th>Acciones</th>
       </tr>
     </thead>
-   <tbody>
-  <tr *ngFor="let pedido of pedidos">
-    <td>{{ pedido.id }}</td>
-    <td>{{ pedido.cliente.nombre }} {{ pedido.cliente.apellido }}</td>
-    <td>{{ pedido.telefono }}</td>
-    <td>{{ pedido.direccion }}</td>
-    <td>{{ pedido.estado }}</td>
-    <td>
-      <button (click)="verDetalles(pedido)">👁️ Ver</button>
-      <button (click)="eliminarPedido(pedido.id)">🗑️</button>
-    </td>
-  </tr>
-</tbody>
-
-
+    <tbody>
+      <tr *ngFor="let pedido of pedidos">
+        <td>{{ pedido.id }}</td>
+        <td>{{ pedido.cliente.nombre }} {{ pedido.cliente.apellido }}</td>
+        <td>{{ pedido.telefono }}</td>
+        <td>{{ pedido.direccion }}</td>
+        <td>{{ pedido.estado | uppercase }}</td>
+        <td>
+          <button (click)="verDetalles(pedido)">👁️ Ver</button>
+          <button (click)="abrirModal(pedido)">✏️ Editar</button>
+          <button (click)="eliminarPedido(pedido.id)">🗑️</button>
+        </td>
+      </tr>
+    </tbody>
   </table>
+</div>
+
+<!-- Modal compartido -->
+<div class="modal-bg" *ngIf="modalActivo">
+  <div class="modal">
+    <h2>{{ modoLectura ? '👁️ Detalles del Pedido' : '✏️ Editar Estado del Pedido' }}</h2>
+
+    <div class="info-cliente">
+      <p><strong>Cliente:</strong> {{ pedidoEditando.cliente.nombre }} {{ pedidoEditando.cliente.apellido }}</p>
+      <p><strong>Teléfono:</strong> {{ pedidoEditando.telefono }}</p>
+      <p><strong>Dirección:</strong> {{ pedidoEditando.direccion }}</p>
+    </div>
+
+    <div class="campo-form">
+      <label for="estado">🛠️ Estado del Pedido</label>
+
+      <ng-container *ngIf="modoLectura; else editarEstado">
+        <p style="margin-top: 0.5rem; font-weight: bold;">{{ pedidoEditando.estado | uppercase }}</p>
+      </ng-container>
+
+      <ng-template #editarEstado>
+        <select id="estado" [(ngModel)]="pedidoEditando.estado">
+          <option value="pendiente">⏳ Pendiente</option>
+          <option value="enviado">✅ Enviado</option>
+          <option value="cancelado">❌ Cancelado</option>
+        </select>
+      </ng-template>
+    </div>
+
+    <div class="acciones-modal">
+      <button *ngIf="!modoLectura" class="btn-guardar" (click)="guardarCambiosPedido()">💾 Guardar Cambios</button>
+      <button class="btn-cancelar" (click)="cerrarModal()">Cerrar</button>
+    </div>
+  </div>
 </div>

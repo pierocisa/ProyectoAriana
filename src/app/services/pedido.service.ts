@@ -1,5 +1,13 @@
 import { Injectable } from '@angular/core';
-import { Firestore, collection, collectionData, doc, deleteDoc, addDoc } from '@angular/fire/firestore';
+import {
+  Firestore,
+  collection,
+  collectionData,
+  doc,
+  deleteDoc,
+  addDoc,
+  updateDoc // ✅ Importar updateDoc
+} from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -18,7 +26,7 @@ export class PedidoService {
 
   // 🗑 Eliminar pedido
   eliminarPedido(id: string) {
-    const ref = doc(this.firestore, `${this.coleccion}/${id}`);
+    const ref = doc(this.firestore, `${this.coleccion}/${id}`); // ✅ Corregido con backticks
     return deleteDoc(ref);
   }
 
@@ -26,5 +34,11 @@ export class PedidoService {
   agregarPedido(pedido: any) {
     const ref = collection(this.firestore, this.coleccion);
     return addDoc(ref, pedido);
+  }
+
+  // 📝 Actualizar pedido (por ID)
+  actualizarPedido(id: string, data: any) {
+    const ref = doc(this.firestore, `${this.coleccion}/${id}`); // ✅ Corregido con backticks
+    return updateDoc(ref, data);
   }
 }

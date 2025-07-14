@@ -1,18 +1,24 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common'; // ✅ Importa CommonModule
-import { PedidoService } from '../../../services/pedido.service'; // ✅ Importa PedidoService bien
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { PedidoService } from '../../../services/pedido.service';
 
 @Component({
   selector: 'app-pedidos',
   standalone: true,
-  imports: [CommonModule], // ✅ Agrega CommonModule
+  imports: [CommonModule, FormsModule],
   templateUrl: './pedidos.html',
   styleUrls: ['./pedidos.css']
 })
 export class PedidosComponent implements OnInit {
   pedidos: any[] = [];
 
-  constructor(private pedidoService: PedidoService) {} // ✅ Usa PedidoService
+  // Modal de edición o visualización
+  modalActivo = false;
+  modoLectura = false; // true = solo ver, false = editar
+  pedidoEditando: any = null;
+
+  constructor(private pedidoService: PedidoService) {}
 
   ngOnInit(): void {
     this.obtenerPedidos();
@@ -25,27 +31,53 @@ export class PedidosComponent implements OnInit {
         cliente: pedido.cliente || { nombre: 'Sin nombre', apellido: '' },
         telefono: pedido.cliente?.telefono || 'No registrado',
         direccion: pedido.cliente?.direccion || 'No registrada',
-        estado: pedido.estado || 'Pendiente'
+        estado: pedido.estado || 'pendiente'
       }));
     });
   }
 
   verDetalles(pedido: any) {
-    console.log('📦 Detalles del pedido:', pedido);
-    alert(`
-      Cliente: ${pedido.cliente.nombre} ${pedido.cliente.apellido}
-      Teléfono: ${pedido.telefono}
-      Dirección: ${pedido.direccion}
-      Estado: ${pedido.estado}
-    `);
+    this.modoLectura = true;
+    this.pedidoEditando = { ...pedido };
+    this.modalActivo = true;
+  }
+
+  abrirModal(pedido: any) {
+    this.modoLectura = false;
+    this.pedidoEditando = { ...pedido };
+    this.modalActivo = true;
+  }
+
+  cerrarModal() {
+    this.modalActivo = false;
+    this.pedidoEditando = null;
+    this.modoLectura = false;
   }
 
   eliminarPedido(id: string) {
-    if (confirm('¿Seguro que quieres eliminar este pedido?')) {
-      this.pedidoService.eliminarPedido(id).then(() => {
-        alert('Pedido eliminado correctamente ✅');
-        this.obtenerPedidos(); // 🔄 Refresca lista
-      });
-    }
+  if (confirm('🗑️ ¿Estás seguro de que deseas eliminar este pedido? Esta acción no se puede deshacer.')) {
+    this.pedidoService.eliminarPedido(id).then(() => {
+      alert('✅ Pedido eliminado correctamente.');
+      this.obtenerPedidos(); // Recarga la lista después de eliminar
+    }).catch(error => {
+      console.error('❌ Error al eliminar el pedido:', error);
+      alert('⚠️ No se pudo eliminar el pedido. Intenta nuevamente.');
+    });
+  }
+}
+
+  guardarCambiosPedido() {
+    if (!this.pedidoEditando?.id) return;
+
+    this.pedidoService.actualizarPedido(this.pedidoEditando.id, {
+      estado: this.pedidoEditando.estado
+    }).then(() => {
+      alert('✅ Estado actualizado correctamente');
+      this.cerrarModal();
+      this.obtenerPedidos();
+    }).catch(err => {
+      console.error('❌ Error al actualizar:', err);
+      alert('⚠️ No se pudo actualizar el estado del pedido');
+    });
   }
 }

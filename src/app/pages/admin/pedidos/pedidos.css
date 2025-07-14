@@ -1,19 +1,169 @@
+/* 📦 Contenedor principal */
 .admin-container {
-  margin: 20px;
+  padding: 2rem;
+  background-color: #f9f9f9;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  font-family: 'Segoe UI', sans-serif;
 }
 
+.admin-container h2 {
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+}
+
+/* 📊 Tabla de pedidos */
 .admin-table {
   width: 100%;
   border-collapse: collapse;
+  background-color: white;
+  border-radius: 12px;
+  overflow: hidden;
 }
 
 .admin-table th, .admin-table td {
-  border: 1px solid #ddd;
-  padding: 8px;
-  text-align: center;
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid #eee;
 }
 
 .admin-table th {
+  background-color: #f0f0f0;
+  font-weight: bold;
+}
+
+.admin-table td {
+  vertical-align: middle;
+}
+
+/* 🎯 Estado con color */
+.admin-table td.estado-pendiente {
+  color: #999;
+  font-weight: bold;
+}
+
+.admin-table td.estado-enviado {
+  color: #28a745;
+  font-weight: bold;
+}
+
+.admin-table td.estado-cancelado {
+  color: #dc3545;
+  font-weight: bold;
+}
+
+/* 🧩 Botones */
+button {
+  padding: 0.4rem 0.8rem;
+  margin: 0 0.2rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #e0e0e0;
+}
+
+/* 📝 Modal de edición */
+.modal-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal {
+  background: white;
+  padding: 2rem;
+  border-radius: 16px;
+  width: 90%;
+  max-width: 450px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.modal h2 {
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  color: #333;
+}
+
+.info-cliente p {
+  margin: 0.5rem 0;
+  color: #555;
+}
+
+.modal label {
+  display: block;
+  margin-top: 1.2rem;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.modal select {
+  width: 100%;
+  padding: 0.6rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  background-color: #f9f9f9;
+  font-size: 1rem;
+}
+
+/* 🎛 Acciones dentro del modal */
+.acciones-modal {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.8rem;
+}
+
+.btn-guardar {
   background-color: #4CAF50;
   color: white;
+  padding: 0.6rem 1rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.btn-guardar:hover {
+  background-color: #45a049;
+}
+
+.btn-cancelar {
+  background-color: #f44336;
+  color: white;
+  padding: 0.6rem 1rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.btn-cancelar:hover {
+  background-color: #e53935;
+}
+
+/* ✨ Animación suave */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

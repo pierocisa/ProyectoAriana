@@ -15,13 +15,26 @@
     </ul>
 
     <div class="acciones">
-      <span class="material-symbols-outlined" (click)="irAlLogin()">account_circle</span>
-      <span class="material-symbols-outlined" (click)="irAlCarrito()">shopping_cart</span>
+      <!-- ICONO USUARIO: cambia según estado -->
+      <span
+        class="material-symbols-outlined"
+        (click)="irAlLoginOCerrarSesion()"
+        title="{{ usuarioLogueado ? 'Cerrar sesión' : 'Iniciar sesión' }}">
+        <ng-container *ngIf="!usuarioLogueado">
+          account_circle
+        </ng-container>
+        <ng-container *ngIf="usuarioLogueado">
+          logout
+        </ng-container>
+      </span>
+
+      <!-- ICONO CARRITO (sin cambios) -->
+      <span class="material-symbols-outlined" (click)="irAlCarrito()">
+        shopping_cart
+      </span>
     </div>
   </nav>
 </header>
-
-
 
 <router-outlet></router-outlet>
 
@@ -56,7 +69,6 @@
 
     <div class="footer-contacto">
       <p>📧 arianacarrasco&commat;gmail.com</p>
-      
     </div>
   </div>
 
@@ -64,9 +76,3 @@
     © {{ anoActual || 2024 }}  Todos los derechos reservados.
   </div>
 </footer>
-
-
-
-
-
-
