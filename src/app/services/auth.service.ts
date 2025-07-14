@@ -4,6 +4,9 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class AuthService {
+  resetPassword(email: string) {
+    throw new Error('Method not implemented.');
+  }
   // Simula un inicio de sesión
   login(email: string, password: string): Promise<boolean> {
     // 🔐 Aquí puedes conectar con Firebase Auth o validar
