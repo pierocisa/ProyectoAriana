@@ -1,0 +1,19 @@
+.admin-container {
+  margin: 20px;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.admin-table th, .admin-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+
+.admin-table th {
+  background-color: #4CAF50;
+  color: white;
+}

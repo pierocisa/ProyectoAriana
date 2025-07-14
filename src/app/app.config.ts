@@ -1,4 +1,3 @@
-// src/app/app.config.ts
 import { provideRouter, Routes } from '@angular/router';
 
 // 🧭 Layout general del sitio público
@@ -11,7 +10,7 @@ import { CuidadosComponent }          from './pages/cuidados/cuidados'; // ✅ N
 import { PaquetesComponent }          from './pages/paquetes/paquetes';
 import { CarritoComponent }           from './pages/carrito/carrito';
 import { PromocionesComponent }       from './pages/promociones/promociones';
-import { DetalleEnvioComponent } from './pages/detalle-envio/detalle-envio'; 
+import { DetalleEnvioComponent }      from './pages/detalle-envio/detalle-envio'; 
 
 // 🔐 Guards
 import { authGuard } from './guards/auth.guard';
@@ -28,6 +27,8 @@ const UsuariosComponent = () =>
   import('./pages/admin/usuarios/usuarios').then(m => m.UsuariosComponent);
 const OfertasComponent = () =>
   import('./pages/admin/ofertas/ofertas').then(m => m.OfertasComponent);
+const PedidosComponent = () =>
+  import('./pages/admin/pedidos/pedidos').then(m => m.PedidosComponent); // ✅ NUEVO: Pedidos
 
 // ⚡ Login lazy-loaded
 const LoginComponent = () =>
@@ -47,8 +48,7 @@ const routes: Routes = [
       { path: 'paquetes',         component: PaquetesComponent },
       { path: 'carrito',          component: CarritoComponent },
       { path: 'promociones',      component: PromocionesComponent },
-      { path: 'detalle-envio',      component: DetalleEnvioComponent }
-      // 🛑 ❌ Ruta vacía eliminada: no tenía path ni componente definido
+      { path: 'detalle-envio',    component: DetalleEnvioComponent }
     ]
   },
 
@@ -65,6 +65,7 @@ const routes: Routes = [
       { path: 'categorias', loadComponent: CategoriasComponent },
       { path: 'usuarios',   loadComponent: UsuariosComponent },
       { path: 'ofertas',    loadComponent: OfertasComponent },
+      { path: 'pedidos',    loadComponent: PedidosComponent }, // ✅ NUEVA RUTA: Pedidos
       { path: '', redirectTo: 'productos', pathMatch: 'full' } // Redirección por defecto
     ]
   },

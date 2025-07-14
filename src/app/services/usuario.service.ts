@@ -15,6 +15,12 @@ export class UsuarioService {
     return collectionData(ref, { idField: 'id' });
   }
 
+  actualizarUsuario(id: string, data: any) {
+  const ref = doc(this.firestore, `${this.coleccion}/${id}`);
+  return updateDoc(ref, data);
+}
+
+
   actualizarRol(id: string, rol: string) {
     const ref = doc(this.firestore, `${this.coleccion}/${id}`);
     return updateDoc(ref, { role: rol });

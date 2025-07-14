@@ -18,7 +18,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let user of usuariosFiltrados">
+      <tr *ngFor="let user of usuariosFiltrados; let i = index">
         <td>{{ user.email }}</td>
         <td>{{ user.role | uppercase }}</td>
         <td>
@@ -30,6 +30,7 @@
           </span>
         </td>
         <td>
+          <button class="btn-editar" (click)="abrirModal(i)">✏️ Editar</button>
           <button
             *ngIf="user.estado === 'inactivo'"
             (click)="habilitarUsuario(user)"
@@ -57,3 +58,30 @@
     ⏳ Cargando usuarios...
   </div>
 </section>
+
+<!-- 📝 Modal flotante para editar usuario -->
+<div class="modal-bg" *ngIf="modalActivo">
+  <div class="modal">
+    <h3>✏️ Editar Usuario</h3>
+
+    <label>Email (no editable):</label>
+    <input type="email" [(ngModel)]="usuarioEditando.email" disabled />
+
+    <label>Rol:</label>
+    <select [(ngModel)]="usuarioEditando.role">
+      <option value="customer">CUSTOMER</option>
+      <option value="admin">ADMIN</option>
+    </select>
+
+    <label>Estado:</label>
+    <select [(ngModel)]="usuarioEditando.estado">
+      <option value="activo">Activo</option>
+      <option value="inactivo">Inactivo</option>
+    </select>
+
+    <div class="acciones-modal">
+      <button class="btn-guardar" (click)="guardarCambiosUsuario()">💾 Guardar</button>
+      <button class="btn-cancelar" (click)="cerrarModal()">❌ Cancelar</button>
+    </div>
+  </div>
+</div>

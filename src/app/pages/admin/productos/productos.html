@@ -14,18 +14,22 @@
     </label>
   </div>
 
+  <!-- ✅ Botón de nuevo producto -->
   <div class="acciones-productos">
     <button (click)="abrirModal()" class="btn-crear">➕ Nuevo Producto</button>
   </div>
 
+  <!-- ⏳ Mensaje de carga -->
   <div *ngIf="cargando" class="cargando">
     ⏳ Cargando productos...
   </div>
 
+  <!-- 📭 Mensaje si no hay productos -->
   <div *ngIf="!cargando && productosFiltrados.length === 0" class="sin-productos">
     📭 No hay productos registrados para esta categoría.
   </div>
 
+  <!-- 📦 Tabla de productos -->
   <table *ngIf="!cargando && productosFiltrados.length > 0" class="tabla-productos">
     <thead>
       <tr>
@@ -45,22 +49,55 @@
         <td>{{ prod.nombre }}</td>
         <td>{{ prod.descripcion }}</td>
         <td>S/. {{ prod.precio }}</td>
-        <td>{{ prod.stock }}</td>
-        <td><img [src]="prod.imagen" alt="Imagen" class="miniatura" /></td>
-        <td>{{ prod.estado === 'activo' ? '✅ Activo' : '🚫 Inactivo' }}</td>
+
+        <!-- ✅ Stock con input para añadir -->
         <td>
-          <button (click)="abrirModal(prod)" class="btn-editar">✏️</button>
+          <div>
+            <strong>{{ prod.stock }}</strong> unidades
+          </div>
+          <div class="actualizar-stock">
+            <input
+              type="number"
+              [(ngModel)]="prod.cantidadExtra"
+              min="1"
+              placeholder="➕ Añadir"
+              style="width: 70px; margin-right: 4px;"
+            />
+            <button
+              (click)="aumentarStock(prod)"
+              class="btn-actualizar-stock"
+              title="Añadir al stock"
+            >
+              🔄
+            </button>
+          </div>
+        </td>
+
+        <td>
+          <img [src]="prod.imagen" alt="Imagen" class="miniatura" />
+        </td>
+        <td>
+          {{ prod.estado === 'activo' ? '✅ Activo' : '🚫 Inactivo' }}
+        </td>
+        <td>
+          <button (click)="abrirModal(prod)" class="btn-editar" title="Editar">
+            ✏️
+          </button>
+
           <button
             *ngIf="prod.estado === 'activo'"
             (click)="inhabilitar(prod)"
             class="btn-inactivar"
+            title="Inhabilitar"
           >
             🚫
           </button>
+
           <button
             *ngIf="prod.estado === 'inactivo'"
             (click)="activar(prod)"
             class="btn-activar"
+            title="Activar"
           >
             ✅
           </button>
@@ -70,28 +107,35 @@
   </table>
 </section>
 
-<!-- Modal para agregar o editar producto -->
+<!-- 📦 Modal para agregar o editar producto -->
 <div class="modal-bg" *ngIf="modalActivo">
   <div class="modal">
     <h3>{{ editandoId ? '✏️ Editar Producto' : '➕ Nuevo Producto' }}</h3>
 
     <label for="categoria">Categoría:</label>
-    <select id="categoria" [(ngModel)]="nuevoProducto.categoria">
+    <select id="categoria" [(ngModel)]="nuevoProducto.categoria" required>
       <option disabled value="">Seleccione una categoría</option>
       <option *ngFor="let cat of categoriasDisponibles" [value]="cat">{{ cat }}</option>
     </select>
 
     <label for="nombre">Nombre:</label>
-    <input id="nombre" type="text" [(ngModel)]="nuevoProducto.nombre" />
+    <input id="nombre" type="text" [(ngModel)]="nuevoProducto.nombre" required />
 
     <label for="descripcion">Descripción:</label>
     <textarea id="descripcion" [(ngModel)]="nuevoProducto.descripcion"></textarea>
 
     <label for="precio">Precio:</label>
-    <input id="precio" type="number" [(ngModel)]="nuevoProducto.precio" />
+    <input id="precio" type="number" [(ngModel)]="nuevoProducto.precio" min="0" required />
 
-    <label for="stock">Stock:</label>
-    <input id="stock" type="number" [(ngModel)]="nuevoProducto.stock" min="0" />
+    <label for="stock">Stock inicial:</label>
+    <input
+      id="stock"
+      type="number"
+      [(ngModel)]="nuevoProducto.stock"
+      min="0"
+      placeholder="Cantidad inicial"
+      required
+    />
 
     <label for="imagen">Imagen:</label>
     <input type="file" accept="image/*" (change)="cargarImagen($event)" />

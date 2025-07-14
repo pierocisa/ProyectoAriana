@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { CartService } from '../../services/cart';
+import { ProductoService } from '../../services/producto.service'; // ✅ Importa servicio para verificar stock
 
 @Component({
   standalone: true,
@@ -15,6 +16,7 @@ export class CarritoComponent implements OnInit {
 
   constructor(
     private cartService: CartService,
+    private productoService: ProductoService, // ✅ Inyecta servicio
     private router: Router
   ) {}
 
@@ -44,10 +46,30 @@ export class CarritoComponent implements OnInit {
     this.carrito = this.cartService.obtenerCarrito();
   }
 
-  finalizarCompra() {
-    this.router.navigate(['/detalle-envio']);
+  // ✅ Nueva lógica: confirmar compra con validación de stock
+  async confirmarCompra(cliente: any) {
+    try {
+      for (const item of this.carrito) {
+        if (item.cantidad > item.stock) {
+          alert(`❌ Producto agotado: ${item.nombre}. Solo quedan ${item.stock} unidades.`);
+          return; // ⛔ Detiene la compra
+        }
+      }
+
+      // 🔥 Procesar compra y reducir stock
+      await this.cartService.procesarCompra(cliente);
+
+      // ✅ Redirigir al detalle de envío
+      this.router.navigate(['/detalle-envio']);
+    } catch (err) {
+      console.error('❌ Error al confirmar compra:', err);
+      alert('⚠️ No se pudo finalizar la compra. Intenta nuevamente.');
+    }
   }
+
+  finalizarCompra() {
+  // 🔥 Redirige a la página de detalle de envío
+  this.router.navigate(['/detalle-envio']);
 }
 
-
-
+}

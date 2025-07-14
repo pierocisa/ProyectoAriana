@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ProductoService } from '../../../services/producto.service';
@@ -18,18 +18,19 @@ export class ProductosComponent implements OnInit {
     'plantas',
     'macetas',
     'sustratos',
-    'cuidados', // ✅ sin tildes y minúsculas
+    'cuidados',
     'paquetes'
   ];
 
-  categoriasSeleccionadas: string[] = []; // ✅ Lista de categorías activas
+  categoriasSeleccionadas: string[] = [];
 
   nuevoProducto = this.obtenerProductoVacio();
-  productos: any[] = [];          // Todos los productos
-  productosFiltrados: any[] = []; // Solo los que coinciden con filtros
+  productos: any[] = [];
+  productosFiltrados: any[] = [];
   cargando = false;
 
   private productoService = inject(ProductoService);
+  private cdr = inject(ChangeDetectorRef); // ✅ Para forzar refresco de vista
 
   ngOnInit() {
     this.cargarProductos();
@@ -39,9 +40,11 @@ export class ProductosComponent implements OnInit {
     this.cargando = true;
     this.productoService.obtenerProductos().subscribe({
       next: (data: any[]) => {
-        this.productos = data;
-        this.filtrarProductos(); // Aplica filtros al cargar
+        // ✅ Evita duplicados y agrega campo auxiliar
+        this.productos = data.map(p => ({ ...p, cantidadExtra: 0 }));
+        this.filtrarProductos();
         this.cargando = false;
+        this.cdr.detectChanges(); // 👀 Forzar refresco en la vista
       },
       error: (err: any) => {
         console.error('❌ Error al obtener productos:', err);
@@ -51,10 +54,8 @@ export class ProductosComponent implements OnInit {
     });
   }
 
-  // ✅ Filtra productos según categorías seleccionadas
   filtrarProductos() {
     if (this.categoriasSeleccionadas.length === 0) {
-      // Si no hay filtros, muestra todos
       this.productosFiltrados = this.productos;
     } else {
       this.productosFiltrados = this.productos.filter((p) =>
@@ -63,7 +64,6 @@ export class ProductosComponent implements OnInit {
     }
   }
 
-  // ✅ Detecta cambios en el checklist
   toggleCategoria(categoria: string) {
     const index = this.categoriasSeleccionadas.indexOf(categoria);
     if (index === -1) {
@@ -110,7 +110,7 @@ export class ProductosComponent implements OnInit {
           alert('✅ Producto agregado correctamente.');
         }
         this.cerrarModal();
-        this.cargarProductos();
+        this.refrescarDatos(); // 🔄 Refresca lista
       } catch (err) {
         console.error('❌ Error al guardar producto:', err);
         alert('⚠️ Error al guardar el producto.');
@@ -133,14 +133,47 @@ export class ProductosComponent implements OnInit {
 
   inhabilitar(producto: any) {
     this.productoService.actualizarProducto(producto.id, { estado: 'inactivo' })
-      .then(() => this.cargarProductos())
-      .catch(err => console.error('❌ Error al inhabilitar producto:', err));
+      .then(() => {
+        console.log(`✅ Producto ${producto.nombre} inhabilitado.`);
+        this.refrescarDatos();
+      })
+      .catch(err => {
+        console.error('❌ Error al inhabilitar producto:', err);
+        alert('⚠️ No se pudo inhabilitar el producto.');
+      });
   }
 
   activar(producto: any) {
     this.productoService.actualizarProducto(producto.id, { estado: 'activo' })
-      .then(() => this.cargarProductos())
-      .catch(err => console.error('❌ Error al activar producto:', err));
+      .then(() => {
+        console.log(`✅ Producto ${producto.nombre} activado.`);
+        this.refrescarDatos();
+      })
+      .catch(err => {
+        console.error('❌ Error al activar producto:', err);
+        alert('⚠️ No se pudo activar el producto.');
+      });
+  }
+
+  // ✅ Aumentar stock sin sobrescribir
+  async aumentarStock(producto: any) {
+    if (producto.cantidadExtra > 0) {
+      try {
+        await this.productoService.aumentarStockProducto(producto.id, producto.cantidadExtra);
+        alert(`✅ Se han añadido ${producto.cantidadExtra} unidades al stock.`);
+        producto.cantidadExtra = 0; // Reset campo
+        this.refrescarDatos();
+      } catch (err) {
+        console.error('❌ Error al aumentar stock:', err);
+        alert('⚠️ No se pudo aumentar el stock.');
+      }
+    } else {
+      alert('⚠️ Ingresa una cantidad válida para aumentar stock.');
+    }
+  }
+
+  refrescarDatos() {
+    this.cargarProductos();
   }
 
   private resetearFormulario() {

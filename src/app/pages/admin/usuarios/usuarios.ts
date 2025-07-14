@@ -15,6 +15,11 @@ export class UsuariosComponent implements OnInit {
   usuarios: any[] = [];
   filtroEmail: string = '';
 
+  // ✅ Variables para modal
+  modalActivo = false;
+  editandoId: number | null = null;
+  usuarioEditando: any = this.obtenerUsuarioVacio();
+
   private usuarioService = inject(UsuarioService);
 
   ngOnInit() {
@@ -43,6 +48,42 @@ export class UsuariosComponent implements OnInit {
     });
   }
 
+  // ✅ Modal
+  abrirModal(index?: number) {
+    if (index !== undefined) {
+      this.editandoId = index;
+      this.usuarioEditando = { ...this.usuarios[index] }; // Copia
+    } else {
+      this.editandoId = null;
+      this.usuarioEditando = this.obtenerUsuarioVacio();
+    }
+    this.modalActivo = true;
+  }
+
+  cerrarModal() {
+    this.modalActivo = false;
+    this.editandoId = null;
+  }
+
+  guardarCambiosUsuario() {
+    if (!this.usuarioEditando.id) {
+      alert('⚠️ No se puede actualizar un usuario sin ID.');
+      return;
+    }
+
+    this.usuarioService.actualizarUsuario(this.usuarioEditando.id, {
+      role: this.usuarioEditando.role,
+      estado: this.usuarioEditando.estado
+    }).then(() => {
+      alert('✅ Usuario actualizado correctamente.');
+      this.cerrarModal();
+      this.cargarUsuarios();
+    }).catch(err => {
+      console.error('❌ Error al actualizar usuario:', err);
+      alert('⚠️ No se pudo actualizar el usuario.');
+    });
+  }
+
   habilitarUsuario(user: any) {
     this.usuarioService.actualizarEstado(user.id, 'activo')
       .then(() => this.cargarUsuarios())
@@ -53,5 +94,13 @@ export class UsuariosComponent implements OnInit {
     this.usuarioService.actualizarEstado(user.id, 'inactivo')
       .then(() => this.cargarUsuarios())
       .catch(err => console.error('❌ Error al deshabilitar usuario:', err));
+  }
+
+  private obtenerUsuarioVacio() {
+    return {
+      email: '',
+      role: 'customer',
+      estado: 'activo'
+    };
   }
 }

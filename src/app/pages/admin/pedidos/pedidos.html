@@ -1,0 +1,30 @@
+<div class="admin-container">
+  <h2>Gestión de Pedidos</h2>
+  <table class="admin-table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Cliente</th>
+        <th>Teléfono</th>
+        <th>Dirección</th>
+        <th>Estado</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+   <tbody>
+  <tr *ngFor="let pedido of pedidos">
+    <td>{{ pedido.id }}</td>
+    <td>{{ pedido.cliente.nombre }} {{ pedido.cliente.apellido }}</td>
+    <td>{{ pedido.telefono }}</td>
+    <td>{{ pedido.direccion }}</td>
+    <td>{{ pedido.estado }}</td>
+    <td>
+      <button (click)="verDetalles(pedido)">👁️ Ver</button>
+      <button (click)="eliminarPedido(pedido.id)">🗑️</button>
+    </td>
+  </tr>
+</tbody>
+
+
+  </table>
+</div>
