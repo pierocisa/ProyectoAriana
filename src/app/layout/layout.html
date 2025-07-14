@@ -9,7 +9,7 @@
     </label>
     
     <ul class="menu-navegacion">
-      <li><a routerLink="/">Inicio</a></li>
+      <li><a (click)="irAInicio()">Inicio</a></li>
       <li><a routerLink="/historia">Nuestra historia</a></li>
       <li><a routerLink="/contacto">Contacto</a></li>
     </ul>
@@ -68,11 +68,17 @@
     </div>
 
     <div class="footer-contacto">
-      <p>📧 arianacarrasco&commat;gmail.com</p>
+      <a
+        href="https://mail.google.com/mail/?view=cm&fs=1&to=arianacarrascolopez210203&#64;gmail.com"
+        target="_blank"
+        rel="noopener"
+      >
+        📧 arianacarrascolopez210203&#64;gmail.com
+      </a>
     </div>
   </div>
 
   <div class="footer-credito">
-    © {{ anoActual || 2024 }}  Todos los derechos reservados.
+    © {{ anoActual || 2024 }} Todos los derechos reservados.
   </div>
 </footer>

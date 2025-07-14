@@ -5,36 +5,42 @@ import { Router, RouterOutlet } from '@angular/router';
 @Component({
   selector: 'app-layout',
   standalone: true,
-  imports: [RouterOutlet,CommonModule],
+  imports: [RouterOutlet, CommonModule],
   templateUrl: './layout.html',
   styleUrls: ['./layout.css']
 })
 export class LayoutComponent implements OnInit {
   anoActual = new Date().getFullYear();
-  usuarioLogueado = false;  // ✅ flag para estado de sesión
+  usuarioLogueado = false;  // ✅ indica si hay sesión iniciada
 
   constructor(private router: Router) {}
 
-  ngOnInit() {
-    // Al cargar, lee si hay token en localStorage
+  ngOnInit(): void {
+    // 🟢 Al iniciar, verifica si hay un token en el localStorage
     this.usuarioLogueado = !!localStorage.getItem('token');
   }
 
-  /** Inicia login o cierra sesión según estado */
-  irAlLoginOCerrarSesion() {
+  /** ✅ Ir siempre al inicio */
+  irAInicio(): void {
+    this.router.navigateByUrl('/', { skipLocationChange: false });
+  }
+
+  /** 🔐 Login o cerrar sesión */
+  irAlLoginOCerrarSesion(): void {
     if (this.usuarioLogueado) {
-      // Cierra sesión
+      // 🛑 Cerrar sesión
       localStorage.removeItem('token');
       this.usuarioLogueado = false;
-      this.router.navigate(['/']);        // o ['/inicio'] si así lo prefieres
+      alert('👋 Has cerrado sesión correctamente.');
+      this.irAInicio(); // Llévalo al inicio
     } else {
-      // Lleva al login
+      // 🔑 Redirigir a login
       this.router.navigate(['/login']);
     }
   }
 
-  /** Navega al carrito (sin cambios) */
-  irAlCarrito() {
+  /** 🛒 Ir al carrito */
+  irAlCarrito(): void {
     this.router.navigate(['/carrito']);
   }
 }

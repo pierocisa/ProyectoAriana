@@ -1,0 +1,158 @@
+.envio-con-resumen {
+  display: flex;
+  gap: 2rem;
+  padding: 2rem;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f9f9f9;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  flex-wrap: wrap;
+}
+
+.columna-formulario {
+  flex: 1;
+  min-width: 300px;
+  background: #fff;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.columna-formulario h2 {
+  margin-bottom: 1.5rem;
+  font-size: 1.6rem;
+  color: #333;
+}
+
+.form-campos {
+  display: grid;
+  gap: 1rem;
+}
+
+input,
+select {
+  width: 100%;
+  padding: 0.8rem;
+  font-size: 0.95rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #fefefe;
+  transition: border-color 0.3s;
+}
+
+input:focus,
+select:focus {
+  border-color: #007BFF;
+  outline: none;
+}
+
+.guardar-linea {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.95rem;
+  margin-top: 0.5rem;
+}
+
+.boton-continuar {
+  margin-top: 1.5rem;
+  padding: 0.9rem 1.5rem;
+  font-size: 1rem;
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.boton-continuar:disabled {
+  background-color: #aaa;
+  cursor: not-allowed;
+}
+
+.boton-continuar:hover:not(:disabled) {
+  background-color: #0056b3;
+}
+
+.resumen-pedido {
+  flex: 1;
+  min-width: 300px;
+  background: white;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.resumen-pedido h3 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.producto-linea {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 0.8rem;
+}
+
+.producto-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.miniatura {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.producto-texto span {
+  display: block;
+  font-size: 0.95rem;
+}
+
+.producto-precio {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: bold;
+}
+
+.producto-precio button {
+  background: transparent;
+  border: none;
+  color: #d00;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.producto-precio button:hover {
+  color: #a00;
+}
+
+.linea-separador {
+  border-top: 1px solid #ccc;
+  margin: 1.2rem 0;
+}
+
+.resumen-totales {
+  font-size: 1rem;
+}
+
+.linea-total {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.total-final {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #333;
+}

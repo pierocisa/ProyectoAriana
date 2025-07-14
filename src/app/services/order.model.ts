@@ -6,6 +6,7 @@ export interface Order {
     precio:   number;
     cantidad: number;
   }>;
+
   cliente: {
     nombre:       string;
     apellido:     string;
@@ -20,8 +21,13 @@ export interface Order {
     comprobante:  string;
     guardar?:     boolean;
   };
-  fecha: Date;
-  total: number;
-  // opcionalmente añade:
-  userId?: string;
+
+  fecha: Date;             // Fecha y hora del pedido
+  total: number;           // Total a pagar
+  userId?: string;         // UID del usuario autenticado
+
+  // 🔥 Nuevos campos opcionales para pagos
+  comprobanteUrl?: string; // URL de la imagen subida como comprobante
+  codigoPago?: string;     // Código de operación ingresado por cliente
+  estadoPago?: 'pendiente' | 'aprobado' | 'rechazado'; // Estado del pago
 }

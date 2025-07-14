@@ -1,9 +1,8 @@
-// src/app/pages/detalle-envio/detalle-envio.component.ts
 import { Component, OnInit }   from '@angular/core';
 import { CommonModule }        from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
 import { Router }              from '@angular/router';
-import { Auth }                from '@angular/fire/auth';
+import { Auth, onAuthStateChanged, User } from '@angular/fire/auth';
 
 import { CartService }         from '../../services/cart';
 import { OrderService }        from '../../services/order.service';
@@ -32,7 +31,11 @@ function stripUndefined(obj: any): any {
   styleUrls:  ['./detalle-envio.css']
 })
 export class DetalleEnvioComponent implements OnInit {
+
   carrito: any[] = [];
+  codigoPago: string = '';         // ✅ Código de operación ingresado por el cliente
+  mostrandoQR: boolean = false;    // ✅ Mostrar u ocultar el QR de pago
+  cargando: boolean = false;       // ✅ Spinner al guardar
 
   constructor(
     private cartService:  CartService,
@@ -55,49 +58,68 @@ export class DetalleEnvioComponent implements OnInit {
     return +(this.subtotal + this.igv).toFixed(2);
   }
 
-  eliminarItem(i: number) {
+  eliminarItem(i: number): void {
     this.cartService.eliminar(i);
     this.carrito = this.cartService.obtenerCarrito();
   }
 
-  async enviarPedido(f: NgForm) {
-    if (f.invalid) {
-      f.control.markAllAsTouched();
+  mostrarQR(): void {
+    if (this.carrito.length === 0) {
+      alert('❌ Tu carrito está vacío');
+      return;
+    }
+    this.mostrandoQR = true;
+  }
+
+  /** 📨 Enviar pedido con código de operación */
+  async subirCodigoOperacion(f: NgForm): Promise<void> {
+    if (f.invalid || !this.codigoPago) {
+      alert('❌ Completa los datos de envío y agrega un código de operación.');
       return;
     }
 
-    const user = this.auth.currentUser;
-    if (!user) {
-      alert('❌ Debes iniciar sesión.');
-      this.router.navigate(['/login']);
-      return;
-    }
-
-    // Prepara el pedido “crudo”
-    const nuevoPedido: any = {
-      productos: this.carrito.map(item => ({
-        nombre:   item.nombre,
-        precio:   item.precio,
-        cantidad: item.cantidad
-      })),
-      cliente: f.value,
-      fecha:   new Date(),
-      total:   this.total,
-      userId:  user.uid
-    };
-
-    // Limpia undefined
-    const pedidoLimpio: Order = stripUndefined(nuevoPedido);
+    this.cargando = true;
 
     try {
-      const ref = await this.orderService.crearPedido(pedidoLimpio);
-      console.log('Pedido guardado con ID:', ref.id);
+      const user: User | null = await new Promise(resolve => {
+        const unsub = onAuthStateChanged(this.auth, u => {
+          unsub();
+          resolve(u);
+        });
+      });
+
+      if (!user) {
+        alert('🔐 Debes iniciar sesión para confirmar tu pedido.');
+        this.router.navigate(['/login']);
+        return;
+      }
+
+      const nuevoPedido: Order = stripUndefined({
+        productos: this.carrito.map(item => ({
+          id:       item.id,
+          nombre:   item.nombre,
+          precio:   item.precio,
+          cantidad: item.cantidad
+        })),
+        cliente: f.value,
+        codigoOperacion: this.codigoPago, // ✅ Guarda el código de operación
+        estado:    'PENDIENTE',            // Estado inicial
+        fecha:     new Date(),
+        total:     this.total,
+        userId:    user.uid
+      });
+
+      const ref = await this.orderService.crearPedido(nuevoPedido);
+      console.log('✅ Pedido guardado con ID:', ref);
+
       this.cartService.vaciar();
-      alert('✅ Pedido enviado correctamente');
+      alert('✅ Pedido enviado correctamente. El administrador validará tu pago.');
       this.router.navigate(['/']);
     } catch (err) {
-      console.error('Error al enviar pedido:', err);
-      alert('❌ Error al enviar pedido');
+      console.error('❌ Error al enviar pedido:', err);
+      alert('⚠️ Ocurrió un error al enviar el pedido. Intenta nuevamente.');
+    } finally {
+      this.cargando = false;
     }
   }
 }

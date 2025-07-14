@@ -7,6 +7,7 @@
         <th>Cliente</th>
         <th>Teléfono</th>
         <th>Dirección</th>
+        <th>Codigo Pago</th> <!-- 🆕 NUEVO -->
         <th>Estado</th>
         <th>Acciones</th>
       </tr>
@@ -17,11 +18,20 @@
         <td>{{ pedido.cliente.nombre }} {{ pedido.cliente.apellido }}</td>
         <td>{{ pedido.telefono }}</td>
         <td>{{ pedido.direccion }}</td>
+        <td>{{ pedido.codigoPago }}</td> <!-- 🆕 Mostrar código pago -->
         <td>{{ pedido.estado | uppercase }}</td>
         <td>
           <button (click)="verDetalles(pedido)">👁️ Ver</button>
           <button (click)="abrirModal(pedido)">✏️ Editar</button>
           <button (click)="eliminarPedido(pedido.id)">🗑️</button>
+
+          <!-- 🆕 Botón Validar solo si el estado es PENDIENTE -->
+          <button
+            class="btn-validar"
+            (click)="validarPedido(pedido.id)"
+            *ngIf="pedido.estado === 'PENDIENTE'">
+            ✅ Validar
+          </button>
         </td>
       </tr>
     </tbody>
@@ -37,6 +47,7 @@
       <p><strong>Cliente:</strong> {{ pedidoEditando.cliente.nombre }} {{ pedidoEditando.cliente.apellido }}</p>
       <p><strong>Teléfono:</strong> {{ pedidoEditando.telefono }}</p>
       <p><strong>Dirección:</strong> {{ pedidoEditando.direccion }}</p>
+      <p><strong>Código de Pago:</strong> {{ pedidoEditando.codigoPago }}</p> <!-- 🆕 Mostrar código en modal -->
     </div>
 
     <div class="campo-form">

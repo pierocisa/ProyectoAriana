@@ -1,35 +1,23 @@
 <section class="envio-con-resumen">
   <div class="columna-formulario">
     <h2>Detalles de Envío</h2>
-    <form #f="ngForm" (ngSubmit)="enviarPedido(f)">
+    <form #f="ngForm" (ngSubmit)="subirCodigoOperacion(f)">
       <div class="form-campos">
-        <input  name="nombre"       ngModel required placeholder="Nombre *" />
-        <input  name="apellido"     ngModel required placeholder="Apellido *" />
-        <input  name="dni"          ngModel required placeholder="DNI *" />
-        <input  name="telefono"     ngModel required placeholder="Teléfono *" />
-
-        <select name="departamento" ngModel required>
-          <option value="">Departamento *</option>
-          <option>Apurímac</option><option>Cusco</option><option>Lima</option>
-        </select>
-
-        <select name="provincia" ngModel required>
-          <option value="">Provincia *</option>
-          <option>Abancay</option><option>Cusco</option>
-        </select>
-
-        <select name="distrito" ngModel required>
-          <option value="">Distrito *</option>
-          <option>Tamburco</option><option>Wanchaq</option>
-        </select>
-
-        <input name="direccion"    ngModel required placeholder="Dirección exacta *" />
-        <input name="ciudad"       ngModel required placeholder="Ciudad *" />
+        <input name="nombre" ngModel required placeholder="Nombre *" />
+        <input name="apellido" ngModel required placeholder="Apellido *" />
+        <input name="dni" ngModel required placeholder="DNI *" />
+        <input name="telefono" ngModel required placeholder="Teléfono *" />
+        <input name="region" ngModel required placeholder="Región *"/>
+        <input name="provincia" ngModel required placeholder="Provincia *"/>
+        <input name="distrito" ngModel required placeholder="Distrito *"/>
+        <input name="direccion" ngModel required placeholder="Dirección exacta *" />
+        <input name="ciudad" ngModel required placeholder="Ciudad *" />
         <input name="codigoPostal" ngModel required placeholder="Código Postal *" />
 
         <select name="comprobante" ngModel required>
           <option value="">Comprobante *</option>
-          <option>Boleta</option><option>Factura</option>
+          <option>Boleta</option>
+          <option>Factura</option>
         </select>
 
         <label class="guardar-linea">
@@ -38,9 +26,35 @@
         </label>
       </div>
 
-      <button type="submit" class="boton-continuar" [disabled]="f.invalid">
-        ➡ Continuar
+      <!-- 🆕 Botón para mostrar QR -->
+      <button 
+        type="button" 
+        class="boton-continuar" 
+        (click)="mostrarQR()" 
+        [disabled]="carrito.length === 0">
+        📱 Pagar con Yape
       </button>
+
+      <!-- 🆕 Bloque QR -->
+      <div *ngIf="mostrandoQR" class="qr-pago">
+        <h3>Escanea el código QR con tu app de pagos:</h3>
+       <img src="/yape-qr.png" alt="QR de Yape" />
+
+        <p>Después de realizar el pago, ingresa el <strong>código de operación</strong>:</p>
+
+        <input 
+          name="codigoPago" 
+          [(ngModel)]="codigoPago" 
+          placeholder="Código de operación *" 
+          required />
+
+        <button 
+          type="submit" 
+          class="boton-continuar" 
+          [disabled]="f.invalid || !codigoPago || cargando">
+          ✅ Confirmar Pago
+        </button>
+      </div>
     </form>
   </div>
 
