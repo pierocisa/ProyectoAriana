@@ -1,48 +1,48 @@
-<section class="login-panel">
-  <h2 *ngIf="isLogin; else regTitle">Iniciar sesión</h2>
-  <ng-template #regTitle><h2>Crear cuenta</h2></ng-template>
+  <section class="login-panel">
+    <h2 *ngIf="isLogin; else regTitle">Iniciar sesión</h2>
+    <ng-template #regTitle><h2>Crear cuenta</h2></ng-template>
 
-  <p class="registro-link">
-    <a href="#" (click)="toggleMode(); $event.preventDefault()">
-      {{ isLogin ? '¿Eres nuevo? Regístrate' : '¿Ya tienes cuenta? Inicia sesión' }}
-    </a>
-  </p>
+    <p class="registro-link">
+      <a href="#" (click)="toggleMode(); $event.preventDefault()">
+        {{ isLogin ? '¿Eres nuevo? Regístrate' : '¿Ya tienes cuenta? Inicia sesión' }}
+      </a>
+    </p>
 
-  <form #f="ngForm" (ngSubmit)="submit(f)">
-    <label>Email</label>
-    <input
-      type="email"
-      name="email"
-      [(ngModel)]="email"
-      placeholder="ejemplo@gmail.com"
-      required
-      email
-    />
+    <form #f="ngForm" (ngSubmit)="submit(f)">
+      <label>Email</label>
+      <input
+        type="email"
+        name="email"
+        [(ngModel)]="email"
+        placeholder="ejemplo@gmail.com"
+        required
+        email
+      />
 
-    <label>Contraseña</label>
-    <input
-      type="password"
-      name="password"
-      [(ngModel)]="password"
-      placeholder="••••••••"
-      required
-      minlength="6"
-    />
+      <label>Contraseña</label>
+      <input
+        type="password"
+        name="password"
+        [(ngModel)]="password"
+        placeholder="••••••••"
+        required
+        minlength="6"
+      />
 
-    <button type="submit" class="btn-ingresar">
-      {{ isLogin ? 'Iniciar sesión' : 'Registrarme' }}
-    </button>
-  </form>
+      <button type="submit" class="btn-ingresar">
+        {{ isLogin ? 'Iniciar sesión' : 'Registrarme' }}
+      </button>
+    </form>
 
-  <p *ngIf="infoMsg" class="info-msg">{{ infoMsg }}</p>
-  <p *ngIf="errorMsg" class="error-msg">
-    {{ errorMsg }}
-    <button
-      *ngIf="errorMsg.includes('verificado')"
-      (click)="resendVerification()"
-      class="btn-reenviar"
-    >
-      Reenviar correo
-    </button>
-  </p>
-</section>
+    <p *ngIf="infoMsg" class="info-msg">{{ infoMsg }}</p>
+    <p *ngIf="errorMsg" class="error-msg">
+      {{ errorMsg }}
+      <button
+        *ngIf="errorMsg.includes('verificado')"
+        (click)="resendVerification()"
+        class="btn-reenviar"
+      >
+        Reenviar correo
+      </button>
+    </p>
+  </section>

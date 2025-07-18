@@ -1,10 +1,11 @@
 <!-- 🎯 Slider con Hero superpuesto -->
 <div class="slider">
-  <div 
-    class="slide" 
-    *ngFor="let imagen of imagenes; let i = index" 
-    [class.active]="i === imagenActual">
-    <img [src]="imagen" alt="Imagen de fondo" />
+  <div
+    *ngFor="let img of imagenes; let i = index"
+    class="slide"
+    [class.active]="i === imagenActual"
+  >
+    <img [src]="img" alt="Imagen de fondo" />
 
     <!-- 🪴 Hero encima -->
     <div class="hero-overlay" *ngIf="i === imagenActual">
@@ -20,83 +21,77 @@
 </div>
 
 <!-- 🌱 Categorías principales -->
-<!-- 🌿 Sección principal de categorías -->
 <section class="categorias" id="categorias">
-
-  <!-- 🌸 Título destacado con ícono decorativo -->
   <h2 class="titulo-categorias">
     <span class="icono-categoria">🌿</span>
     Explorá nuestras <strong>categorías</strong>
   </h2>
 
-  <!-- 🌱 Grilla responsive de tarjetas -->
   <div class="grid-categorias">
-
-    <!-- 🪴 Categoría 1: Plantas -->
+    <!-- Planta -->
     <a routerLink="/plantas" class="link-categoria">
       <div class="categoria">
-        <img src="/foto.jpg" alt="Imagen de plantas" />
+        <img src="assets/img/ari.jpg" alt="Imagen de plantas" />
         <h2>Plantas</h2>
       </div>
     </a>
 
-    <!-- 🪴 Categoría 2: Macetas -->
+    <!-- Macetas -->
     <a routerLink="/macetas" class="link-categoria">
       <div class="categoria">
-        <img src="/ari.jpg" alt="Imagen de macetas" />
+        <img src="assets/img/macetas.jpeg" alt="Imagen de macetas" />
         <h2>Macetas</h2>
       </div>
     </a>
 
-    <!-- 🪴 Categoría 3: Sustractos -->
+    <!-- Sustratos -->
     <a routerLink="/sustratos" class="link-categoria">
       <div class="categoria">
-        <img src="/ari.jpg" alt="Imagen de sustratos" />
+        <img src="assets/img/sustratos.jpg" alt="Imagen de sustratos" />
         <h2>Sustratos</h2>
       </div>
     </a>
 
-    <!-- 🪴 Categoría 4: Líneas de cuidado -->
+    <!-- Líneas de cuidado -->
     <a routerLink="/cuidado" class="link-categoria">
       <div class="categoria">
-        <img src="/foto2.jpg" alt="Imagen de cuidado de plantas" />
+        <img src="assets/img/Cuidado.jpg" alt="Imagen de cuidado de plantas" />
         <h2>Lineas de cuidado</h2>
       </div>
     </a>
-    <!-- 🪴 Categoría 5: Paquetes -->
-<a routerLink="/paquetes" class="link-categoria">
-  <div class="categoria">
-    <img src="/foto.jpg" alt="Imagen de paquetes botánicos" />
-    <h2>Paquetes</h2>
-  </div>
-</a>
 
-
+    <!-- Paquetes -->
+    <a routerLink="/paquetes" class="link-categoria">
+      <div class="categoria">
+        <img src="assets/img/foto2.jpg" alt="Imagen de paquetes botánicos" />
+        <h2>Paquetes</h2>
+      </div>
+    </a>
   </div>
 </section>
+
+<!-- 🌸 Nuestra Historia -->
 <section class="seccion-historia" id="historia">
   <div class="historia-wrapper">
     <div class="historia-texto">
       <h2>🌸 Nuestra Historia</h2>
       <p>
-        Somos más que una tienda — somos un pequeño jardín que creció desde casa. 
-        Ariana Carrasco Shop nace del amor por el diseño, las macetas llenas de vida y 
+        Somos más que una tienda — somos un pequeño jardín que creció desde casa.
+        Ariana Carrasco Shop nace del amor por el diseño, las macetas llenas de vida y
         ese toque natural que transforma espacios.
       </p>
       <p>
-        Nuestra misión: inspirar a conectar con la naturaleza desde el detalle, 
+        Nuestra misión: inspirar a conectar con la naturaleza desde el detalle,
         cultivando bienestar a través de productos que cuidan y decoran.
       </p>
     </div>
     <div class="historia-imagen">
-      <img src="/historia-foto.jpg" alt="Ariana Carrasco en el taller" />
+      <img src="assets/img/ari.jpg" alt="Ariana Carrasco en el taller" />
     </div>
   </div>
 </section>
 
-
-
-
+<!-- 🌸 Promo Exclusiva -->
 <section class="promo-split" id="promociones">
   <div class="promo-split-texto">
     <h2>🌸 Promo Exclusiva</h2>
@@ -108,16 +103,8 @@
   </div>
 
   <div class="promo-split-imagen">
-    <img src="/foto.jpg" alt="Combo promocional botánico" />
+    <img src="assets/img/foto.jpg" alt="Combo promocional botánico" />
   </div>
 </section>
-
-
-
-
-
-
-
-
 
 <footer></footer>

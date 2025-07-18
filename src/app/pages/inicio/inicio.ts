@@ -5,15 +5,19 @@ import { NgIf, NgFor } from '@angular/common';
 @Component({
   selector: 'app-inicio',
   standalone: true,
-  imports: [RouterLink, NgIf, NgFor],
+  imports: [ RouterLink, NgIf, NgFor ],
   templateUrl: './inicio.html',
   styleUrls: ['./inicio.css']
 })
 export class InicioComponent implements OnInit {
+  // 📂 Asegúrate de que estas imágenes existen en src/assets/img/
   imagenes = [
-    '/foto.jpg',
-    '/Cuidado.jpg',
-    '/foto2.jpg'
+    'assets/img/foto.jpg',
+    'assets/img/Cuidado.jpg',
+    'assets/img/foto2.jpg',
+    'ssets/img/ari.jpg',
+    'assets/img/macetas.jpeg',
+    'assets/img/sustratos.jpg'
   ];
 
   imagenActual = 0;
@@ -37,7 +41,3 @@ export class InicioComponent implements OnInit {
     }
   }
 }
-
-
-
-

@@ -9,7 +9,18 @@ import {
   createUserWithEmailAndPassword,
   sendEmailVerification
 } from '@angular/fire/auth';
-import { Firestore, doc, setDoc }  from '@angular/fire/firestore';
+import {
+  Firestore,
+  doc,
+  setDoc,
+  getDoc
+} from '@angular/fire/firestore';
+
+interface UserData {
+  email: string;
+  role: 'admin' | 'customer';
+  createdAt: number;
+}
 
 @Component({
   standalone: true,
@@ -57,17 +68,28 @@ export class LoginComponent {
           this.password
         );
 
-        // Verifica que el correo esté confirmado
+        // Verifica email
         if (!cred.user.emailVerified) {
           this.errorMsg = '❌ Tu correo no está verificado. Revisa tu bandeja.';
           return;
         }
 
-        // 🔑 AÑADIDO: marcamos sesión guardando algo en localStorage
-        localStorage.setItem('token', cred.user.uid);
-
-        // Acceso concedido → admin
-        this.ngZone.run(() => this.router.navigate(['/admin']));
+        // Lee rol desde Firestore
+        const userRef = doc(this.fs, 'users', cred.user.uid);
+        const snap    = await getDoc(userRef);
+        if (!snap.exists()) {
+          this.errorMsg = '❌ Usuario sin perfil en Firestore.';
+          return;
+        }
+        const data = snap.data() as UserData;
+        const role = data.role;
+        
+        // Redirige según rol
+        if (role === 'admin') {
+          this.ngZone.run(() => this.router.navigate(['/admin']));
+        } else {
+          this.ngZone.run(() => this.router.navigate(['/cliente']));
+        }
 
       } else {
         // — SIGNUP —
@@ -83,18 +105,21 @@ export class LoginComponent {
         });
 
         // Guarda perfil mínimo en Firestore
-        await setDoc(doc(this.fs, 'users', cred.user.uid), {
-          email:     cred.user.email,
-          role:      'customer',
+        const newUser: UserData = {
+          email: cred.user.email!,
+          role: 'customer',
           createdAt: Date.now()
-        });
+        };
+        await setDoc(doc(this.fs, 'users', cred.user.uid), newUser);
 
-        this.infoMsg = 
+        this.infoMsg =
           '✅ Te enviamos un correo de verificación. ' +
           'Ábrelo (revísate spam) y luego vuelve a iniciar sesión.';
         this.isLogin = true;
       }
+
     } catch (e: any) {
+      // Limpia el código auth/xxx a algo legible
       this.errorMsg = e.code
         ? e.code.replace('auth/', '').replace(/-/g, ' ')
         : (e.message || 'Error inesperado');

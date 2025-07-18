@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 
 interface UserData {
   email: string;
-  role: 'admin' | 'customer'; // solo permitimos estos dos valores
+  role: 'admin' | 'customer';
   createdAt: number;
 }
 
@@ -19,28 +19,25 @@ export class AuthService {
     private router: Router
   ) {}
 
+  /** 🔑 Login: autentica y redirige según rol */
   async login(email: string, password: string): Promise<boolean> {
     try {
-      // 🔑 Inicia sesión en Firebase Authentication
-      const userCredential = await this.afAuth.signInWithEmailAndPassword(email, password);
-      const uid = userCredential.user?.uid;
-
+      const cred = await this.afAuth.signInWithEmailAndPassword(email, password);
+      const uid = cred.user?.uid;
       if (!uid) {
         console.warn('❌ No se pudo obtener UID');
         return false;
       }
 
-      // 📄 Referencia al documento en Firestore
       const userDocRef = this.firestore.collection<UserData>('users').doc(uid);
-      const userDocSnap = await userDocRef.get().toPromise();
-
-      let userData: UserData | undefined = userDocSnap?.data();
+      const snap = await userDocRef.ref.get();
+      let userData = snap.data();
 
       if (!userData) {
-        // ⚡ Si no existe el documento, crear uno con rol por defecto
+        // Si no existe, creamos perfil por defecto
         userData = {
-          email: email,
-          role: 'customer', // Rol por defecto
+          email,
+          role: 'customer',
           createdAt: Date.now()
         };
         await userDocRef.set(userData);
@@ -49,32 +46,54 @@ export class AuthService {
 
       console.log('🔥 Datos del usuario Firestore:', userData);
 
-      // ✅ Verificar el rol del usuario
-      switch (userData.role) {
-        case 'admin':
-          console.log('✅ Usuario administrador');
-          this.router.navigate(['/admin']); // Cambia a la ruta del panel admin
-          return true;
-
-        case 'customer':
-          console.log('✅ Usuario cliente');
-          this.router.navigate(['/cliente']); // Cambia a la ruta cliente
-          return true;
-
-        default:
-          console.warn('⚠️ Rol no definido o desconocido:', userData.role);
-          return false;
+      // Redirige según role
+      if (userData.role === 'admin') {
+        this.router.navigate(['/admin']);
+      } else {
+        this.router.navigate(['/cliente']);
       }
+      return true;
 
-    } catch (error: any) {
-      console.error('❌ Error al iniciar sesión:', error.message || error);
+    } catch (err: any) {
+      console.error('❌ Error al iniciar sesión:', err.message || err);
       return false;
     }
   }
 
+  /** 🔐 Logout */
   logout(): void {
     this.afAuth.signOut();
     this.router.navigate(['/login']);
     console.log('🔒 Sesión cerrada');
+  }
+
+  /** ✍️ Register: crea cuenta en Auth y doc en Firestore */
+  async register(email: string, password: string): Promise<boolean> {
+    try {
+      const cred = await this.afAuth.createUserWithEmailAndPassword(email, password);
+      const uid = cred.user?.uid;
+      if (!uid) {
+        console.error('❌ No se obtuvo UID al registrar');
+        return false;
+      }
+
+      const newUser: UserData = {
+        email,
+        role: 'customer',
+        createdAt: Date.now()
+      };
+      await this.firestore.collection<UserData>('users').doc(uid).set(newUser);
+      console.log('✅ Usuario registrado y agregado a Firestore:', newUser);
+
+      // Opcional: puedes enviar verificación de email aquí
+      // await cred.user.sendEmailVerification();
+
+      this.router.navigate(['/login']);
+      return true;
+
+    } catch (err: any) {
+      console.error('❌ Error al registrar usuario:', err.message || err);
+      return false;
+    }
   }
 }
